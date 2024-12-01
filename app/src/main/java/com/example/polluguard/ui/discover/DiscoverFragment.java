@@ -24,8 +24,8 @@ public class DiscoverFragment extends Fragment {
         binding = FragmentDiscoverBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textNotifications;
-        discoverViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+//        final TextView textView = binding.textNotifications;
+//        discoverViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
