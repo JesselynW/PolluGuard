@@ -24,8 +24,8 @@ public class VolunteerFragment extends Fragment {
         binding = FragmentVolunteerBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textDashboard;
-        volunteerViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+//        final TextView textView = binding.textDashboard;
+//        volunteerViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
