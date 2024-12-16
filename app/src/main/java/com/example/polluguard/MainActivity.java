@@ -13,7 +13,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.polluguard.databinding.ActivityHomeBinding;
 
-public class HomeActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
 
     private ActivityHomeBinding binding;
