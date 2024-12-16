@@ -6,4 +6,10 @@
     <color name="red">#D61A1A</color>
     <color name="lightBlue">#D7E9F7</color>
     <color name="yellowCoupon">#FDE870</color>
+    <color name="backgroundTextBlue">#6D9AF2</color>
+    <color name="yellowText">#9F5F00</color>
+    <color name="greenText">#0E6300</color>
+    <color name="redText">#9F0000</color>
+    <color name="greenCoupon">#9AE28E</color>
+    <color name="redCoupon">#E88484</color>
 </resources>

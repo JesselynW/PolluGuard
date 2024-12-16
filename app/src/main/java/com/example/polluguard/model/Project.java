@@ -1,0 +1,105 @@
+package com.example.polluguard.model;
+
+import java.io.Serializable;
+
+public class Project implements Serializable {
+    private String projectName;
+    private int imageProject;
+    private String date;
+    private String time;
+    private String location;
+    private String about;
+    private String price;
+    private int reward;
+    private int slot;
+    private int maxSlot;
+    private Organizer organizer;
+
+    public int getImageProject() {
+        return imageProject;
+    }
+
+    public int getMaxSlot() {
+        return maxSlot;
+    }
+
+    public void setMaxSlot(int maxSlot) {
+        this.maxSlot = maxSlot;
+    }
+
+    public void setImageProject(int imageProject) {
+        this.imageProject = imageProject;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public int getReward() {
+        return reward;
+    }
+
+    public void setReward(int reward) {
+        this.reward = reward;
+    }
+
+    public int getSlot() {
+        return slot;
+    }
+
+    public void setSlot(int slot) {
+        this.slot = slot;
+    }
+
+    public Organizer getOrganizer() {
+        return organizer;
+    }
+
+    public void setOrganizer(Organizer organizer) {
+        this.organizer = organizer;
+    }
+}
