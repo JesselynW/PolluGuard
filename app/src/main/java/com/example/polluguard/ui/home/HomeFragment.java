@@ -104,6 +104,7 @@ public class HomeFragment extends Fragment {
 
         homeViewModel.initialize(getContext());
 
+
         homeViewModel.getUserLiveData().observe(getViewLifecycleOwner(), user -> {
             if(user != null) {
                 etName.setText(user.getName());

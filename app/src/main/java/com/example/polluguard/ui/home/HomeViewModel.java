@@ -8,13 +8,14 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+//import com.example.polluguard.DB;
 import com.example.polluguard.DBHelper;
 import com.example.polluguard.model.User;
 
 public class HomeViewModel extends ViewModel {
 
     private final MutableLiveData<User> userData;
-    private DBHelper dbHelper;
+    private DBHelper db;
     private SharedPreferences sp;
 
     public HomeViewModel() {
@@ -25,7 +26,7 @@ public class HomeViewModel extends ViewModel {
     }
 
     public void initialize(Context context) {
-        dbHelper = new DBHelper(context);
+        db = new DBHelper(context);
         sp = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
     }
 
@@ -42,7 +43,7 @@ public class HomeViewModel extends ViewModel {
         int id = sp.getInt("user_id", -1);
         Log.d("HomeViewModel", "user_id: " + id); // Cek apakah ID yang diambil benar
         if (id != -1) {
-            User user = dbHelper.getUserById(id);
+            User user = db.getUserById(id);
             if (user != null) {
                 userData.setValue(user); // Update LiveData
                 Log.d("HomeViewModel", "User found: " + user.getName()); // Cek apakah user ditemukan
