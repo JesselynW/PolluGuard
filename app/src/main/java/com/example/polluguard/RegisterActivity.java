@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -36,12 +37,22 @@ public class RegisterActivity extends AppCompatActivity {
     private Uri uri;
     private Bitmap bitmapImage;
     private DBHelper db;
+    TextView login;
 
-    SharedPreferences sp;
+    SharedPreferences shp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sp = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        boolean isLoggedIn = sp.getBoolean("isLoggedIn", false);
+
+        if (isLoggedIn) {
+            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
+
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_register);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -61,6 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
         etConfPassword = findViewById(R.id.confirmPasswordEditText);
         ivProfile = findViewById(R.id.profilePicture);
         registerButton = findViewById(R.id.registerButton);
+        login = findViewById(R.id.loginLink);
         db = new DBHelper(this);
 
         sp = getSharedPreferences("UserData", MODE_PRIVATE);
@@ -130,7 +142,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 cursor.getBlob(4));
                         id = Integer.parseInt(cursor.getString(0));
                     }
-                    SharedPreferences.Editor editor = sp.edit();
+                    SharedPreferences.Editor editor = shp.edit();
                     editor.putInt("user_id", id);
                     editor.apply();
 
@@ -141,6 +153,11 @@ public class RegisterActivity extends AppCompatActivity {
 
                 }
             }
+        });
+
+        login.setOnClickListener(e -> {
+            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            startActivity(intent);
         });
     }
 

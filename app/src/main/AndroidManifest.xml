@@ -17,6 +17,9 @@
         android:theme="@style/Theme.PolluGuard"
         tools:targetApi="31">
         <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.ProjectDetails"
             android:exported="false" />
 
@@ -42,9 +45,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/title_activity_home">
-            
-        </activity>
+            android:label="@string/title_activity_home"></activity>
     </application>
 
 </manifest>

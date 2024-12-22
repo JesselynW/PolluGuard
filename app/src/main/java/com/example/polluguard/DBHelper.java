@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -90,6 +91,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY (articleId) REFERENCES Article(articleId)," +
                 "FOREIGN KEY (userId) REFERENCES User(userId));");
 
+        addUser(db);
         addOrganizer(db);
         addEvent(db);
     }
@@ -181,46 +183,57 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public void addOrganizer(SQLiteDatabase db){
-        db.execSQL("INSERT INTO Organizer VALUES(NULL, 'EcoSolutions Volunteers', "+ R.drawable.rectangle_160 + ", 'Established in 1998, EcoVolunteers is a community-driven non-profit organization focused on environmental projects. Since its inception, they’ve been actively working to promotes sustainability.')");
+        db.execSQL("INSERT INTO Organizer VALUES(NULL, 'EcoSolutions Volunteers', "+ R.drawable.ecosolutions_volunteers + ", 'Established in 1998, EcoVolunteers is a community-driven non-profit organization focused on environmental projects. Since its inception, they’ve been actively working to promotes sustainability.')");
 
-        db.execSQL("INSERT INTO Organizer VALUES(NULL, 'GreenFuture Volunteers', "+ R.drawable.rectangle_160__1_ + ", 'GreenFuture Volunteers focuses on environmental restoration and waste management projects since 2005.')");
+        db.execSQL("INSERT INTO Organizer VALUES(NULL, 'GreenFuture Community', "+ R.drawable.greenfuture_comunity + ", 'GreenFuture Volunteers focuses on environmental restoration and waste management projects since 2005.')");
 
-        db.execSQL("INSERT INTO Organizer VALUES(NULL, 'CleanEarth Community', "+ R.drawable.rectangle_160__2_ + ", 'CleanEarth Community is a group of eco-activists dedicated to urban cleanliness.')");
+        db.execSQL("INSERT INTO Organizer VALUES(NULL, 'CleanEarth Community', "+ R.drawable.cleanearth_community + ", 'CleanEarth Community is a group of eco-activists dedicated to urban cleanliness.')");
 
-        db.execSQL("INSERT INTO Organizer VALUES(NULL, 'EcoMinds Iniative', "+ R.drawable.rectangle_160__3_ + ", 'EcoMinds Initiative is an environmental group dedicated to waste reduction and sustainability. Their mission is to educate the public on better waste disposal methods and recycling techniques.')");
+        db.execSQL("INSERT INTO Organizer VALUES(NULL, 'EcoMinds Foundation', "+ R.drawable.ecominds_foundation + ", 'EcoMinds Initiative is an environmental group dedicated to waste reduction and sustainability. Their mission is to educate the public on better waste disposal methods and recycling techniques.')");
     }
 
     public void addEvent(SQLiteDatabase db){
         db.execSQL
-                ("INSERT INTO Volunteer_event VALUES(NULL, 'Garbage Collection Drive', " + R.drawable.milah_sampah + ", '15th February 2024', '09.00-13.00', 'Jl. Jalur Sutera Bar. No.Kav. 21, Kota Tangerang, Banten', 'A volunteer-driven garbage collection event to clean up public roads. ', 20, 15, 'https://web.whatsapp.com/', " + R.drawable.tanam_pohon5 + ", 1)");
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'Garbage Collection Drive', " + R.drawable.milah_sampah + ", '15th February 2024', '09.00-13.00', 'Jl. Jalur Sutera Bar. No.Kav. 21, Kota Tangerang, Banten', 'A volunteer-driven garbage collection event to clean up public roads. ', 20, 15, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 1)");
 
         db.execSQL
-                ("INSERT INTO Volunteer_event VALUES(NULL, 'Plastic Waste Awareness', " + R.drawable.milah_plastik + ", '10th March 2024', '08.30-12.30', 'Kebayoran Baru, Jakarta', 'An act to raise awareness about plastic waste and recycling methods. ', 15, 30, 'https://web.whatsapp.com/', " + R.drawable.tanam_pohon5 + ", 2)");
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'Plastic Waste Awareness', " + R.drawable.milah_plastik + ", '10th March 2024', '08.30-12.30', 'Kebayoran Baru, Jakarta', 'An act to raise awareness about plastic waste and recycling methods. ', 15, 30, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 2)");
 
         db.execSQL
-                ("INSERT INTO Volunteer_event VALUES(NULL, 'Tree Planting Initiative', " + R.drawable.tanam_pohon + ", '20th April 2024', '07.00-10.00', 'Jl. Imam Bonjol No.12, Jakarta', 'An initiative to plant trees in urban areas to improve air quality. ', 25, 30, 'https://web.whatsapp.com/', " + R.drawable.tanam_pohon5 + ", 1)");
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'Tree Planting Initiative', " + R.drawable.tanam_pohon + ", '20th April 2024', '07.00-10.00', 'Jl. Imam Bonjol No.12, Jakarta', 'An initiative to plant trees in urban areas to improve air quality. ', 25, 30, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 1)");
 
         db.execSQL
-                ("INSERT INTO Volunteer_event VALUES(NULL, 'Sorting Plastics', " + R.drawable.milah_sampah_3 + ", '19th May 2024', '08.00-12.00', 'Jl. SetiaBudi No.19, Jakarta', 'A community effort to clean and sort public parks garbage.', 10, 25, 'https://web.whatsapp.com/', " + R.drawable.tanam_pohon5 + ", 3)");
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'Sorting Plastics', " + R.drawable.milah_sampah_3 + ", '19th May 2024', '08.00-12.00', 'Jl. SetiaBudi No.19, Jakarta', 'A community effort to clean and sort public parks garbage.', 10, 25, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 3)");
 
         db.execSQL
-                ("INSERT INTO Volunteer_event VALUES(NULL, 'Beach Cleanup', " + R.drawable.milah_sampah_di_pinggir_pantai + ", '17th June 2024', '06.00-10.00', 'Kuta Beach, Bali', 'A beach cleanup event to remove plastic and other pollutants.', 10, 45, 'https://web.whatsapp.com/', " + R.drawable.tanam_pohon5 + ", 4)");
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'Beach Cleanup', " + R.drawable.milah_sampah_di_pinggir_pantai + ", '17th June 2024', '06.00-10.00', 'Kuta Beach, Bali', 'A beach cleanup event to remove plastic and other pollutants.', 10, 45, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 4)");
 
         db.execSQL
-                ("INSERT INTO Volunteer_event VALUES(NULL, 'Reforestation', " + R.drawable.tanam_pohon2 + ", '04th July 2024', '07.00-10.00', 'Taman Nasional Gunung Gede, Bogor', 'Reforestation activities in national parks to restore green cover. ', 30, 45, 'https://web.whatsapp.com/', " + R.drawable.tanam_pohon5 + ", 4)");
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'Reforestation', " + R.drawable.tanam_pohon2 + ", '04th July 2024', '07.00-10.00', 'Taman Nasional Gunung Gede, Bogor', 'Reforestation activities in national parks to restore green cover. ', 30, 45, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 4)");
 
         db.execSQL
-                ("INSERT INTO Volunteer_event VALUES(NULL, 'Community Reforestation', " + R.drawable.tanam_pohon3 + ", '11th July 2024', '08.00-12.00', 'Taman Nasional Gunung Gede, Bogor', 'Reforestation activities in national parks to restore green cover. ', 20, 15, 'https://web.whatsapp.com/', " + R.drawable.tanam_pohon5 + ", 1)");
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'Community Reforestation', " + R.drawable.tanam_pohon3 + ", '11th July 2024', '08.00-12.00', 'Taman Nasional Gunung Gede, Bogor', 'Reforestation activities in national parks to restore green cover. ', 20, 15, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 1)");
 
         db.execSQL
-                ("INSERT INTO Volunteer_event VALUES(NULL, 'Urban Green Project', " + R.drawable.tanam_pohon4 + ", '27th August 2024', '08.00-12.00', 'Jl. Sudirman, Jakarta', 'An urban greening initiative to transform unused spaces into green, sustainable areas.', 20, 30, 'https://web.whatsapp.com/', " + R.drawable.tanam_pohon5 + ", 2)");
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'Urban Green Project', " + R.drawable.tanam_pohon4 + ", '27th August 2024', '08.00-12.00', 'Jl. Sudirman, Jakarta', 'An urban greening initiative to transform unused spaces into green, sustainable areas.', 20, 30, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 2)");
 
         db.execSQL
-                ("INSERT INTO Volunteer_event VALUES(NULL, 'Clean Breeze', " + R.drawable.milah_sampah_4 + ", '14th August 2024', '08.00-12.00', 'Jl. Sudirman, Jakarta', 'A massive city-wide campaign to clean streets and public spaces.', 10, 30, 'https://web.whatsapp.com/', " + R.drawable.tanam_pohon5 + ", 4)");
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'Clean Breeze', " + R.drawable.milah_sampah_4 + ", '14th August 2024', '08.00-12.00', 'Jl. Sudirman, Jakarta', 'A massive city-wide campaign to clean streets and public spaces.', 10, 30, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 4)");
 
         db.execSQL
-                ("INSERT INTO Volunteer_event VALUES(NULL, 'SkySavers', " + R.drawable.tanam_pohon5 + ", '21th October 2024', '08.00-12.00', 'Setiabudi, Jakarta', 'A volunteer-driven garbage collection event to clean up public parks.', 25, 30, 'https://web.whatsapp.com/', " + R.drawable.tanam_pohon5 + ", 1)");
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'SkySavers', " + R.drawable.tanam_pohon5 + ", '21th October 2024', '08.00-12.00', 'Setiabudi, Jakarta', 'A volunteer-driven garbage collection event to clean up public parks.', 25, 30, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 1)");
 
+    }
+
+    public void addUser(SQLiteDatabase db){
+        String query = "INSERT INTO User VALUES(NULL, 'jeje', 'jeje@gmail.com', 'jeje123', '081234567890', 10, '29th july 2004', ?)";
+
+        db.execSQL(query, new Object[]{ byteImage });
+    }
+
+    public Cursor getUserbyEmailandPass(String email, String pass){
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM User WHERE email = ? AND password = ?", new String[]{email, pass});
     }
 
     public ArrayList<Project> getAllProjectInformation(){
