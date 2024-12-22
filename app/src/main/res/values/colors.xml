@@ -6,6 +6,12 @@
     <color name="red">#D61A1A</color>
     <color name="lightBlue">#D7E9F7</color>
     <color name="yellowCoupon">#FDE870</color>
+    <color name="aqiGood">#38A925</color>
+    <color name="aqiModerate">#FFDE1F</color>
+    <color name="aqiUnhealthySensitiveGroup">#FF981F</color>
+    <color name="aqiUnhealthy">#FF1F1F</color>
+    <color name="aqiVeryUnhealthy">#A60099</color>
+    <color name="aqiHazardous">#7E0023</color>
     <color name="backgroundTextBlue">#6D9AF2</color>
     <color name="yellowText">#9F5F00</color>
     <color name="greenText">#0E6300</color>

@@ -9,7 +9,14 @@
         android:id="@+id/navigation_home"
         android:name="com.example.polluguard.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home"/>
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/home_to_map"
+            app:destination="@id/navigation_map" />
+        <action
+            android:id="@+id/home_to_volunteer"
+            app:destination="@id/navigation_volunteer" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_volunteer"
