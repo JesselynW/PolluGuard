@@ -1,8 +1,6 @@
 package com.example.polluguard.adapter;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,23 +10,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.polluguard.DBHelper.ProjectDBHelper;
 import com.example.polluguard.R;
 import com.example.polluguard.model.Project;
-import com.example.polluguard.recyclerView.projectOnClick;
+import com.example.polluguard.recyclerView.ProjectOnClick;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class projectAdapter extends RecyclerView.Adapter<projectAdapter.ProjectViewHolder> {
+public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder> {
 
-    private final projectOnClick projectClick;
+    private final ProjectOnClick projectClick;
     private Context context;
     private List<Project> projects;
     Random rand = new Random();
 
-    public projectAdapter(Context context, List<Project> projects,projectOnClick projectClick) {
+    public ProjectAdapter(Context context, List<Project> projects, ProjectOnClick projectClick) {
         this.context = context;
         this.projects = projects;
         this.projectClick = projectClick;
@@ -36,14 +32,15 @@ public class projectAdapter extends RecyclerView.Adapter<projectAdapter.ProjectV
 
     @NonNull
     @Override
-    public projectAdapter.ProjectViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ProjectAdapter.ProjectViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_project, parent, false);
         return new ProjectViewHolder(view, projectClick);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull projectAdapter.ProjectViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ProjectAdapter.ProjectViewHolder holder, int position) {
         Project project = projects.get(position);
+        //harus berdasarkan lokasi saat ini
         int dist = rand.nextInt(50)+1;
 
         holder.name.setText(project.getProjectName());
@@ -53,7 +50,7 @@ public class projectAdapter extends RecyclerView.Adapter<projectAdapter.ProjectV
         holder.date.setText(project.getDate().substring(0, 2));
         holder.month.setText(project.getDate().substring(5, 8).toUpperCase());
         holder.reward.setText(project.getReward() + "");
-        holder.price.setText(project.getPrice());
+        holder.price.setText("FREE");
         holder.slot.setText(project.getSlot() + " slots left");
         holder.distance.setText(dist + " km");
     }
@@ -76,7 +73,7 @@ public class projectAdapter extends RecyclerView.Adapter<projectAdapter.ProjectV
         TextView distance;
         TextView slot;
 
-        public ProjectViewHolder(@NonNull View itemView, projectOnClick projectClick) {
+        public ProjectViewHolder(@NonNull View itemView, ProjectOnClick projectClick) {
             super(itemView);
             bgImage = itemView.findViewById(R.id.projectImage_Project);
             logo = itemView.findViewById(R.id.organizerLogo);

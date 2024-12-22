@@ -9,22 +9,12 @@ public class Project implements Serializable {
     private String time;
     private String location;
     private String about;
-    private String price;
     private int reward;
     private int slot;
-    private int maxSlot;
     private Organizer organizer;
 
     public int getImageProject() {
         return imageProject;
-    }
-
-    public int getMaxSlot() {
-        return maxSlot;
-    }
-
-    public void setMaxSlot(int maxSlot) {
-        this.maxSlot = maxSlot;
     }
 
     public void setImageProject(int imageProject) {
@@ -69,14 +59,6 @@ public class Project implements Serializable {
 
     public void setAbout(String about) {
         this.about = about;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
     }
 
     public int getReward() {

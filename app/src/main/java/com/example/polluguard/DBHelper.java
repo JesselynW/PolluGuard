@@ -7,14 +7,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.example.polluguard.model.Organizer;
+import com.example.polluguard.model.Project;
 import com.example.polluguard.model.User;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -30,12 +31,67 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table User (" +
-                "id integer primary key autoincrement," +
-                "name text," +
-                "email text," +
-                "password text," +
-                "image blob)");
+        //table user
+        db.execSQL("CREATE TABLE User (" +
+                "userId INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "name TEXT," +
+                "email TEXT," +
+                "password TEXT," +
+                "phoneNumber TEXT," +
+                "volunteerPoints INTEGER," +
+                "dateOfBirth TEXT," +
+                "image BLOB)");
+
+        //table organizer
+        db.execSQL("CREATE TABLE Organizer(" +
+                "organizerId INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "name TEXT," +
+                "logo INTEGER," +
+                "description TEXT);");
+
+        //table volunteer_event
+        db.execSQL("CREATE TABLE Volunteer_event(" +
+                "eventId INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "name TEXT," +
+                "image INTEGER," +
+                "date TEXT," +
+                "time TEXT," +
+                "location TEXT," +
+                "about TEXT," +
+                "reward INTEGER," +
+                "slot INTEGER," +
+                "linkWhatsapp TEXT," +
+                "whatsappQR INTEGER," +
+                "organizerId INTEGER," +
+                "FOREIGN KEY (organizerId) REFERENCES Organizer(organizerId));");
+
+        //table user_volunteer_event
+        db.execSQL("CREATE TABLE User_volunteer_event(" +
+                "userId INTEGER," +
+                "eventId INTEGER," +
+                "FOREIGN KEY (eventId) REFERENCES Volunteer_event(eventId)," +
+                "FOREIGN KEY (userId) REFERENCES User(userId)," +
+                "PRIMARY KEY (userId, eventId));");
+
+        //table article
+        db.execSQL("CREATE TABLE Article(" +
+                "articleId INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "title TEXT," +
+                "author TEXT," +
+                "date TEXT," +
+                "content TEXT," +
+                "image INTEGER);");
+
+        //table article comment
+        db.execSQL("CREATE TABLE Article_comment(" +
+                "commentId INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "articleId INTEGER," +
+                "userId INTEGER," +
+                "FOREIGN KEY (articleId) REFERENCES Article(articleId)," +
+                "FOREIGN KEY (userId) REFERENCES User(userId));");
+
+        addOrganizer(db);
+        addEvent(db);
     }
 
     @Override
@@ -58,6 +114,11 @@ public class DBHelper extends SQLiteOpenHelper {
 //                db.execSQL("ALTER TABLE User_New RENAME TO User;");
 //            }
         db.execSQL("DROP TABLE IF EXISTS User");
+        db.execSQL("DROP TABLE IF EXISTS Organizer");
+        db.execSQL("DROP TABLE IF EXISTS Volunteer_event");
+        db.execSQL("DROP TABLE IF EXISTS User_volunteer_event");
+        db.execSQL("DROP TABLE IF EXISTS Article");
+        db.execSQL("DROP TABLE IF EXISTS Article_comment");
         onCreate(db);
 
     }
@@ -90,7 +151,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public User getUserById(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from User where id = ?", new String[]{String.valueOf(id)});
+        Cursor cursor = db.rawQuery("select * from User where userId = ?", new String[]{String.valueOf(id)});
 
         String name = "";
         String email = "";
@@ -117,5 +178,121 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         db.close();
         return user;
+    }
+
+    public void addOrganizer(SQLiteDatabase db){
+        db.execSQL("INSERT INTO Organizer VALUES(NULL, 'EcoSolutions Volunteers', "+ R.drawable.rectangle_160 + ", 'Established in 1998, EcoVolunteers is a community-driven non-profit organization focused on environmental projects. Since its inception, they’ve been actively working to promotes sustainability.')");
+
+        db.execSQL("INSERT INTO Organizer VALUES(NULL, 'GreenFuture Volunteers', "+ R.drawable.rectangle_160__1_ + ", 'GreenFuture Volunteers focuses on environmental restoration and waste management projects since 2005.')");
+
+        db.execSQL("INSERT INTO Organizer VALUES(NULL, 'CleanEarth Community', "+ R.drawable.rectangle_160__2_ + ", 'CleanEarth Community is a group of eco-activists dedicated to urban cleanliness.')");
+
+        db.execSQL("INSERT INTO Organizer VALUES(NULL, 'EcoMinds Iniative', "+ R.drawable.rectangle_160__3_ + ", 'EcoMinds Initiative is an environmental group dedicated to waste reduction and sustainability. Their mission is to educate the public on better waste disposal methods and recycling techniques.')");
+    }
+
+    public void addEvent(SQLiteDatabase db){
+        db.execSQL
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'Garbage Collection Drive', " + R.drawable.milah_sampah + ", '15th February 2024', '09.00-13.00', 'Jl. Jalur Sutera Bar. No.Kav. 21, Kota Tangerang, Banten', 'A volunteer-driven garbage collection event to clean up public roads. ', 20, 15, 'https://web.whatsapp.com/', " + R.drawable.tanam_pohon5 + ", 1)");
+
+        db.execSQL
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'Plastic Waste Awareness', " + R.drawable.milah_plastik + ", '10th March 2024', '08.30-12.30', 'Kebayoran Baru, Jakarta', 'An act to raise awareness about plastic waste and recycling methods. ', 15, 30, 'https://web.whatsapp.com/', " + R.drawable.tanam_pohon5 + ", 2)");
+
+        db.execSQL
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'Tree Planting Initiative', " + R.drawable.tanam_pohon + ", '20th April 2024', '07.00-10.00', 'Jl. Imam Bonjol No.12, Jakarta', 'An initiative to plant trees in urban areas to improve air quality. ', 25, 30, 'https://web.whatsapp.com/', " + R.drawable.tanam_pohon5 + ", 1)");
+
+        db.execSQL
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'Sorting Plastics', " + R.drawable.milah_sampah_3 + ", '19th May 2024', '08.00-12.00', 'Jl. SetiaBudi No.19, Jakarta', 'A community effort to clean and sort public parks garbage.', 10, 25, 'https://web.whatsapp.com/', " + R.drawable.tanam_pohon5 + ", 3)");
+
+        db.execSQL
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'Beach Cleanup', " + R.drawable.milah_sampah_di_pinggir_pantai + ", '17th June 2024', '06.00-10.00', 'Kuta Beach, Bali', 'A beach cleanup event to remove plastic and other pollutants.', 10, 45, 'https://web.whatsapp.com/', " + R.drawable.tanam_pohon5 + ", 4)");
+
+        db.execSQL
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'Reforestation', " + R.drawable.tanam_pohon2 + ", '04th July 2024', '07.00-10.00', 'Taman Nasional Gunung Gede, Bogor', 'Reforestation activities in national parks to restore green cover. ', 30, 45, 'https://web.whatsapp.com/', " + R.drawable.tanam_pohon5 + ", 4)");
+
+        db.execSQL
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'Community Reforestation', " + R.drawable.tanam_pohon3 + ", '11th July 2024', '08.00-12.00', 'Taman Nasional Gunung Gede, Bogor', 'Reforestation activities in national parks to restore green cover. ', 20, 15, 'https://web.whatsapp.com/', " + R.drawable.tanam_pohon5 + ", 1)");
+
+        db.execSQL
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'Urban Green Project', " + R.drawable.tanam_pohon4 + ", '27th August 2024', '08.00-12.00', 'Jl. Sudirman, Jakarta', 'An urban greening initiative to transform unused spaces into green, sustainable areas.', 20, 30, 'https://web.whatsapp.com/', " + R.drawable.tanam_pohon5 + ", 2)");
+
+        db.execSQL
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'Clean Breeze', " + R.drawable.milah_sampah_4 + ", '14th August 2024', '08.00-12.00', 'Jl. Sudirman, Jakarta', 'A massive city-wide campaign to clean streets and public spaces.', 10, 30, 'https://web.whatsapp.com/', " + R.drawable.tanam_pohon5 + ", 4)");
+
+        db.execSQL
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'SkySavers', " + R.drawable.tanam_pohon5 + ", '21th October 2024', '08.00-12.00', 'Setiabudi, Jakarta', 'A volunteer-driven garbage collection event to clean up public parks.', 25, 30, 'https://web.whatsapp.com/', " + R.drawable.tanam_pohon5 + ", 1)");
+
+    }
+
+    public ArrayList<Project> getAllProjectInformation(){
+        ArrayList<Project> projects = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT ve.name, ve.image, ve.date, ve.time, ve.location, ve.about, " +
+                        "ve.reward, ve.slot, o.name AS organizerName, o.logo AS organizerLogo, o.description AS organizerDesc " +
+                        "FROM Volunteer_event AS ve " +
+                        "INNER JOIN Organizer AS o ON ve.organizerId = o.organizerId";
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor.moveToFirst()){
+            do{
+                Project project = new Project();
+
+                project.setProjectName(cursor.getString(cursor.getColumnIndexOrThrow("name")));
+                project.setImageProject(cursor.getInt(cursor.getColumnIndexOrThrow("image")));
+                project.setDate(cursor.getString(cursor.getColumnIndexOrThrow("date")));
+                project.setTime(cursor.getString(cursor.getColumnIndexOrThrow("time")));
+                project.setLocation(cursor.getString(cursor.getColumnIndexOrThrow("location")));
+                project.setAbout(cursor.getString(cursor.getColumnIndexOrThrow("about")));
+                project.setReward(cursor.getInt(cursor.getColumnIndexOrThrow("reward")));
+                project.setSlot(cursor.getInt(cursor.getColumnIndexOrThrow("slot")));
+                project.setOrganizer(new Organizer(
+                        cursor.getString(cursor.getColumnIndexOrThrow("organizerName")),
+                        cursor.getInt(cursor.getColumnIndexOrThrow("organizerLogo")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("organizerDesc"))));
+
+                projects.add(project);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return projects;
+    }
+
+    public ArrayList<Project> getThreeProjectInformation(){
+        ArrayList<Project> projects = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT ve.name, ve.image, ve.date, ve.time, ve.location, ve.about, " +
+                "ve.reward, ve.slot, o.name AS organizerName, o.logo AS organizerLogo, o.description AS organizerDesc " +
+                "FROM Volunteer_event AS ve " +
+                "INNER JOIN Organizer AS o ON ve.organizerId = o.organizerId " +
+                "ORDER BY ve.eventId LIMIT 3";
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor.moveToFirst()){
+            do{
+                Project project = new Project();
+
+                project.setProjectName(cursor.getString(cursor.getColumnIndexOrThrow("name")));
+                project.setImageProject(cursor.getInt(cursor.getColumnIndexOrThrow("image")));
+                project.setDate(cursor.getString(cursor.getColumnIndexOrThrow("date")));
+                project.setTime(cursor.getString(cursor.getColumnIndexOrThrow("time")));
+                project.setLocation(cursor.getString(cursor.getColumnIndexOrThrow("location")));
+                project.setAbout(cursor.getString(cursor.getColumnIndexOrThrow("about")));
+                project.setReward(cursor.getInt(cursor.getColumnIndexOrThrow("reward")));
+                project.setSlot(cursor.getInt(cursor.getColumnIndexOrThrow("slot")));
+                project.setOrganizer(new Organizer(
+                        cursor.getString(cursor.getColumnIndexOrThrow("organizerName")),
+                        cursor.getInt(cursor.getColumnIndexOrThrow("organizerLogo")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("organizerDesc"))));
+
+                projects.add(project);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return projects;
     }
 }

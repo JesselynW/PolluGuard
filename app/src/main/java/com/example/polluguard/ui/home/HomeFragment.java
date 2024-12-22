@@ -1,9 +1,6 @@
 package com.example.polluguard.ui.home;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.polluguard.DBHelper;
 import com.example.polluguard.databinding.FragmentHomeBinding;
-import com.example.polluguard.model.User;
 
 public class HomeFragment extends Fragment {
 
@@ -27,7 +23,7 @@ public class HomeFragment extends Fragment {
     TextView etName;
     ImageView ivProfile;
 
-    private DBHelper dbHelper;
+    private DBHelper db;
     private HomeViewModel homeViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,

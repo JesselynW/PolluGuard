@@ -1,5 +1,5 @@
 package com.example.polluguard.recyclerView;
 
-public interface projectOnClick {
+public interface ProjectOnClick {
     void onItemClick(int position);
 }

@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -15,20 +13,20 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.polluguard.DBHelper.ProjectDBHelper;
+import com.example.polluguard.DBHelper;
 import com.example.polluguard.R;
 import com.example.polluguard.adapter.*;
 import com.example.polluguard.databinding.FragmentVolunteerBinding;
 import com.example.polluguard.model.Project;
-import com.example.polluguard.recyclerView.projectOnClick;
+import com.example.polluguard.recyclerView.ProjectOnClick;
 import com.example.polluguard.ui.ProjectDetails;
 
 import java.util.ArrayList;
 
-public class VolunteerFragment extends Fragment implements projectOnClick {
+public class VolunteerFragment extends Fragment implements ProjectOnClick {
 
-    private previewProjectAdapter previewAdapter;
-    private projectAdapter projectAdapter;
+    private PreviewProjectAdapter previewAdapter;
+    private ProjectAdapter projectAdapter;
     private ArrayList<Project> previews, projects;
     private FragmentVolunteerBinding binding;
     private RecyclerView previewRV, projectRV;
@@ -47,14 +45,14 @@ public class VolunteerFragment extends Fragment implements projectOnClick {
         projectRV = root.findViewById(R.id.projectRecyclerView);
         projectRV.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-        ProjectDBHelper dbHelper = new ProjectDBHelper(getContext());
+        DBHelper dbHelper = new DBHelper(getContext());
         previews = dbHelper.getThreeProjectInformation();
         projects = dbHelper.getAllProjectInformation();
 
-        previewAdapter = new previewProjectAdapter(getContext(), previews);
+        previewAdapter = new PreviewProjectAdapter(getContext(), previews);
         previewRV.setAdapter(previewAdapter);
 
-        projectAdapter = new projectAdapter(getContext(), projects, this);
+        projectAdapter = new ProjectAdapter(getContext(), projects, this);
         projectRV.setAdapter(projectAdapter);
 
         return root;
@@ -69,6 +67,19 @@ public class VolunteerFragment extends Fragment implements projectOnClick {
     @Override
     public void onItemClick(int position) {
         Intent intent = new Intent(getContext(), ProjectDetails.class);
+
+        intent.putExtra("projectName", projects.get(position).getProjectName());
+        intent.putExtra("date", projects.get(position).getDate());
+        intent.putExtra("time", projects.get(position).getTime());
+        intent.putExtra("image", projects.get(position).getImageProject());
+        intent.putExtra("organizerName", projects.get(position).getOrganizer().getOrganizerName());
+        intent.putExtra("organizerLogo", projects.get(position).getOrganizer().getOrganizerLogo());
+        intent.putExtra("organizerDesc", projects.get(position).getOrganizer().getOrganizerDesc());
+        intent.putExtra("desc", projects.get(position).getAbout());
+        intent.putExtra("location", projects.get(position).getLocation());
+        intent.putExtra("reward", projects.get(position).getReward());
+        intent.putExtra("slot", projects.get(position).getSlot());
+
         startActivity(intent);
     }
 }

@@ -35,7 +35,7 @@ public class RegisterActivity extends AppCompatActivity {
     Button registerButton;
     private Uri uri;
     private Bitmap bitmapImage;
-    private DBHelper dbHelper;
+    private DBHelper db;
 
     SharedPreferences sp;
 
@@ -61,7 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
         etConfPassword = findViewById(R.id.confirmPasswordEditText);
         ivProfile = findViewById(R.id.profilePicture);
         registerButton = findViewById(R.id.registerButton);
-        dbHelper = new DBHelper(this);
+        db = new DBHelper(this);
 
         sp = getSharedPreferences("UserData", MODE_PRIVATE);
 
@@ -121,8 +121,8 @@ public class RegisterActivity extends AppCompatActivity {
                 }
                 else {
                     User user = new User(name, email, password, bitmapImage);
-                    dbHelper.insertUser(user);
-                    Cursor cursor = dbHelper.getUser();
+                    db.insertUser(user);
+                    Cursor cursor = db.getUser();
                     int id = 0;
                     while(cursor.moveToNext()){
                         Log.i("User Check", "User ID = "+ cursor.getString(0) +  "User Name= " + cursor.getString(1) + " - Email = "

@@ -13,15 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.polluguard.R;
 import com.example.polluguard.model.Project;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class previewProjectAdapter extends RecyclerView.Adapter<previewProjectAdapter.PreviewProjectViewHolder> {
+public class PreviewProjectAdapter extends RecyclerView.Adapter<PreviewProjectAdapter.PreviewProjectViewHolder> {
 
     private Context context;
     private List<Project> previews;
 
-    public previewProjectAdapter(Context context, List<Project> previews) {
+    public PreviewProjectAdapter(Context context, List<Project> previews) {
         this.context = context;
         this.previews = previews;
     }
@@ -30,7 +29,7 @@ public class previewProjectAdapter extends RecyclerView.Adapter<previewProjectAd
     @Override
     public PreviewProjectViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_previewproject, parent, false);
-        return new previewProjectAdapter.PreviewProjectViewHolder(view);
+        return new PreviewProjectAdapter.PreviewProjectViewHolder(view);
     }
 
     @Override
