@@ -6,12 +6,14 @@ public class User {
     private String name;
     private String email;
     private String password;
+    private int volunteerPoints;
     private Bitmap image;
 
-    public User(String name, String email, String password, Bitmap image) {
+    public User(String name, String email, String password, int volunteerPoints, Bitmap image) {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.volunteerPoints = volunteerPoints;
         this.image = image;
     }
 
@@ -37,6 +39,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getVolunteerPoints() {
+        return volunteerPoints;
+    }
+
+    public void setVolunteerPoints(int volunteerPoints) {
+        this.volunteerPoints = volunteerPoints;
     }
 
     public Bitmap getImage() {

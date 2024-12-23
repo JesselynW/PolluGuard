@@ -132,7 +132,7 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "Password do not match", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    User user = new User(name, email, password, bitmapImage);
+                    User user = new User(name, email, password, 0, bitmapImage);
                     db.insertUser(user);
                     Cursor cursor = db.getUser();
                     int id = 0;

@@ -137,6 +137,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put("name", user.getName());
         values.put("email", user.getEmail());
         values.put("password", user.getPassword());
+        values.put("volunteerPoints", 0);
         values.put("image", byteImage);
 
         long checkQuery = db.insert("User", null, values);
@@ -158,6 +159,7 @@ public class DBHelper extends SQLiteOpenHelper {
         String name = "";
         String email = "";
         String password = "";
+        int volunteerPoints = 0;
         Bitmap image = null;
 
         User user = null;
@@ -167,12 +169,12 @@ public class DBHelper extends SQLiteOpenHelper {
                 name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
                 email = cursor.getString(cursor.getColumnIndexOrThrow("email"));
                 password = cursor.getString(cursor.getColumnIndexOrThrow("password"));
-
+                volunteerPoints = cursor.getInt(cursor.getColumnIndexOrThrow("volunteerPoints"));
                 byte[] imageBlob = cursor.getBlob(cursor.getColumnIndexOrThrow("image"));
                 image = BitmapFactory.decodeByteArray(imageBlob, 0, imageBlob.length);
             }
 
-            user = new User(name, email, password, image);
+            user = new User(name, email, password, volunteerPoints, image);
             cursor.close();
 
         } catch (Exception e) {

@@ -1,18 +1,43 @@
 package com.example.polluguard.ui.profile;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.polluguard.DBHelper;
+import com.example.polluguard.model.User;
+
 public class ProfileViewModel extends ViewModel {
-    private final MutableLiveData<String> mText;
+    private final MutableLiveData<User> userData;
+    private DBHelper db;
+    private SharedPreferences sp;
 
     public ProfileViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is profile fragment");
+        userData = new MutableLiveData<>();
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public void initialize(Context context) {
+        db = new DBHelper(context);
+        sp = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
+    }
+
+    public LiveData<User> getUserLiveData() {
+        int id = sp.getInt("user_id", -1);
+        if(id != -1){
+            User user = db.getUserById(id);
+            if(user != null){
+                userData.setValue(user);
+            }
+            else {
+                userData.setValue(null);
+            }
+        }
+        else {
+            userData.setValue(null);
+        }
+        return userData;
     }
 }
