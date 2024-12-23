@@ -161,15 +161,22 @@ public class HomeFragment extends Fragment {
 
             WindowManager.LayoutParams params = (WindowManager.LayoutParams) container2.getLayoutParams();
             params.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-            params.dimAmount = 0.5f; // Tingkat kegelapan (0.0 - 1.0)
+            params.dimAmount = 0.5f;
             wm.updateViewLayout(container2, params);
         });
 
         btnMap.setOnClickListener(v -> {
-            NavOptions options = new NavOptions.Builder()
-                    .setPopUpTo(R.id.navigation_home, false) // False agar back stack tidak dihapus
-                    .build();
-            Navigation.findNavController(v).navigate(R.id.navigation_map, null, options);
+//            NavOptions options = new NavOptions.Builder()
+//                    .setPopUpTo(R.id.navigation_home, false)
+//                    .build();
+//            Navigation.findNavController(v).navigate(R.id.navigation_map, null, options);
+
+            Fragment fragment = new MapFragment();
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         });
 
         btnVolunteer.setOnClickListener(v -> {

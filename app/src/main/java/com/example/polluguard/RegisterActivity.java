@@ -39,13 +39,13 @@ public class RegisterActivity extends AppCompatActivity {
     private DBHelper db;
     TextView login;
 
-    SharedPreferences shp;
+    SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences sp = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        sp = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         boolean isLoggedIn = sp.getBoolean("isLoggedIn", false);
 
         if (isLoggedIn) {
@@ -142,7 +142,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 cursor.getBlob(4));
                         id = Integer.parseInt(cursor.getString(0));
                     }
-                    SharedPreferences.Editor editor = shp.edit();
+                    SharedPreferences.Editor editor = sp.edit();
                     editor.putInt("user_id", id);
                     editor.apply();
 
