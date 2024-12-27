@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -70,6 +71,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE User_volunteer_event(" +
                 "userId INTEGER," +
                 "eventId INTEGER," +
+                "rewardStatus INTEGER, " +
                 "FOREIGN KEY (eventId) REFERENCES Volunteer_event(eventId)," +
                 "FOREIGN KEY (userId) REFERENCES User(userId)," +
                 "PRIMARY KEY (userId, eventId));");
@@ -94,6 +96,7 @@ public class DBHelper extends SQLiteOpenHelper {
         addUser(db);
         addOrganizer(db);
         addEvent(db);
+        addUserEvent(db);
     }
 
     @Override
@@ -142,7 +145,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
         long checkQuery = db.insert("User", null, values);
         if(checkQuery == -1) return false;
-        else return true;
+        else {
+            user.setUserId((int)checkQuery);
+            return true;
+        }
 
     }
 
@@ -227,6 +233,28 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
+    public void addUserEvent(SQLiteDatabase db) {
+        db.execSQL("INSERT INTO User_volunteer_event VALUES(2, 1, 1)");
+
+        db.execSQL("INSERT INTO User_volunteer_event VALUES(2, 2, 1)");
+
+        db.execSQL("INSERT INTO User_volunteer_event VALUES(2, 3, 1)");
+
+        db.execSQL("INSERT INTO User_volunteer_event VALUES(2, 4, 0)");
+
+        db.execSQL("INSERT INTO User_volunteer_event VALUES(2, 5, 0)");
+
+        db.execSQL("INSERT INTO User_volunteer_event VALUES(2, 6, 0)");
+
+        db.execSQL("INSERT INTO User_volunteer_event VALUES(2, 7, 0)");
+
+        db.execSQL("INSERT INTO User_volunteer_event VALUES(2, 8, 1)");
+
+        db.execSQL("INSERT INTO User_volunteer_event VALUES(2, 9, 1)");
+
+        db.execSQL("INSERT INTO User_volunteer_event VALUES(2, 10, 1)");
+    }
+
     public void addUser(SQLiteDatabase db){
         String query = "INSERT INTO User VALUES(NULL, 'jeje', 'jeje@gmail.com', 'jeje123', '081234567890', 10, '29th july 2004', ?)";
 
@@ -264,6 +292,8 @@ public class DBHelper extends SQLiteOpenHelper {
                         cursor.getString(cursor.getColumnIndexOrThrow("organizerName")),
                         cursor.getInt(cursor.getColumnIndexOrThrow("organizerLogo")),
                         cursor.getString(cursor.getColumnIndexOrThrow("organizerDesc"))));
+
+//                Log.i("DB HELPERRRRRR", "ID EVENTTTT = " + cursor.getInt(cursor.getColumnIndexOrThrow("eventId")));
 
                 projects.add(project);
             } while (cursor.moveToNext());
@@ -309,5 +339,152 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return projects;
+    }
+
+    public ArrayList<Project> getAllUserProject(int userId) {
+        ArrayList<Project> userProjects = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+
+        Cursor cursor = db.rawQuery(
+                "SELECT ve.eventId, rewardStatus, userId, ve.name, ve.image, ve.date, ve.location, ve.reward, o.logo AS organizerLogo FROM Volunteer_event AS ve JOIN User_volunteer_event AS uve ON ve.eventId = uve.eventId JOIN Organizer AS o ON o.organizerId = ve.organizerId WHERE userId = ? AND rewardStatus = 1", new String[]{String.valueOf(userId)});
+//        Cursor cursor = db.rawQuery("SELECT * FROM User_Volunteer_event", new String[]{});
+//        Log.i("DB HELPER", "Cursor = " + cursor);
+//        Log.i("DB HELPER",  "Project Name = " + cursor.getString(cursor.getColumnIndexOrThrow("name")));
+        try {
+            if(cursor.moveToFirst()) {
+                do{
+                    Project project = new Project();
+                    project.setProjectId(cursor.getInt(cursor.getColumnIndexOrThrow("eventId")));
+                    project.setProjectName(cursor.getString(cursor.getColumnIndexOrThrow("name")));
+                    project.setImageProject(cursor.getInt(cursor.getColumnIndexOrThrow("image")));
+                    project.setDate(cursor.getString(cursor.getColumnIndexOrThrow("date")));
+                    project.setLocation(cursor.getString(cursor.getColumnIndexOrThrow("location")));
+                    project.setReward(cursor.getInt(cursor.getColumnIndexOrThrow("reward")));
+                    project.setOrganizer(new Organizer(
+                            cursor.getInt(cursor.getColumnIndexOrThrow("organizerLogo"))));
+
+                    userProjects.add(project);
+
+//                    Log.i("DB HELPER",  "Project ID = " + cursor.getString(cursor.getColumnIndexOrThrow("name")));
+//                    Log.i("DB HELPER", "Project = " + project + " Project Name = " + project.getProjectName());
+                    Log.i("DB HELPER",  "Project ID = " + cursor.getInt(cursor.getColumnIndexOrThrow("eventId")));
+                    Log.i("DB HELPER", "User ID = " + cursor.getInt(cursor.getColumnIndexOrThrow("userId")));
+                    Log.i("DB HELPER", "Status Reward = " + cursor.getInt(cursor.getColumnIndexOrThrow("rewardStatus")));
+                }while(cursor.moveToNext());
+
+            }
+
+            cursor = db.rawQuery(
+                    "SELECT ve.eventId, rewardStatus, userId, ve.name, ve.image, ve.date, ve.location, ve.reward, o.logo AS organizerLogo FROM Volunteer_event AS ve JOIN User_volunteer_event AS uve ON ve.eventId = uve.eventId JOIN Organizer AS o ON o.organizerId = ve.organizerId WHERE userId = ? AND rewardStatus = 0", new String[]{String.valueOf(userId)});
+
+            if(cursor.moveToFirst()) {
+                do{
+                    Project project = new Project();
+                    project.setProjectName(cursor.getString(cursor.getColumnIndexOrThrow("name")));
+                    project.setImageProject(cursor.getInt(cursor.getColumnIndexOrThrow("image")));
+                    project.setDate(cursor.getString(cursor.getColumnIndexOrThrow("date")));
+                    project.setLocation(cursor.getString(cursor.getColumnIndexOrThrow("location")));
+                    project.setReward(cursor.getInt(cursor.getColumnIndexOrThrow("reward")));
+                    project.setOrganizer(new Organizer(
+                            cursor.getInt(cursor.getColumnIndexOrThrow("organizerLogo"))));
+
+                    userProjects.add(project);
+
+//                    Log.i("DB HELPER",  "Project ID = " + cursor.getString(cursor.getColumnIndexOrThrow("name")));
+//                    Log.i("DB HELPER", "Project = " + project + " Project Name = " + project.getProjectName());
+                    Log.i("DB HELPER",  "Project ID = " + cursor.getInt(cursor.getColumnIndexOrThrow("eventId")));
+                    Log.i("DB HELPER", "User ID = " + cursor.getInt(cursor.getColumnIndexOrThrow("userId")));
+                    Log.i("DB HELPER", "Status Reward = " + cursor.getInt(cursor.getColumnIndexOrThrow("rewardStatus")));
+                }while(cursor.moveToNext());
+
+            }
+
+            cursor.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        db.close();
+        return userProjects;
+    }
+
+    public ArrayList<Project> getFiveUserProject(int userId) {
+        ArrayList<Project> userProjects = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+
+        Cursor cursor = db.rawQuery(
+                "SELECT ve.eventId, userId, rewardStatus, ve.name, ve.image, ve.date, ve.location, ve.reward, o.logo AS organizerLogo FROM Volunteer_event AS ve JOIN User_volunteer_event AS uve ON ve.eventId = uve.eventId JOIN Organizer AS o ON o.organizerId = ve.organizerId WHERE userId = ? ORDER BY rewardStatus DESC LIMIT 5", new String[]{String.valueOf(userId)});
+//        Cursor cursor = db.rawQuery("SELECT * FROM User_Volunteer_event", new String[]{});
+//        Log.i("DB HELPER", "Cursor = " + cursor);
+//        Log.i("DB HELPER",  "Project Name = " + cursor.getString(cursor.getColumnIndexOrThrow("name")));
+        try {
+            if(cursor.moveToFirst()) {
+                do{
+                    Project project = new Project();
+                    project.setProjectId(cursor.getInt(cursor.getColumnIndexOrThrow("eventId")));
+                    project.setProjectName(cursor.getString(cursor.getColumnIndexOrThrow("name")));
+                    project.setImageProject(cursor.getInt(cursor.getColumnIndexOrThrow("image")));
+                    project.setDate(cursor.getString(cursor.getColumnIndexOrThrow("date")));
+                    project.setLocation(cursor.getString(cursor.getColumnIndexOrThrow("location")));
+                    project.setReward(cursor.getInt(cursor.getColumnIndexOrThrow("reward")));
+                    project.setOrganizer(new Organizer(
+                            cursor.getInt(cursor.getColumnIndexOrThrow("organizerLogo"))));
+
+                    userProjects.add(project);
+
+//                    Log.i("DB HELPER",  "Project ID = " + cursor.getString(cursor.getColumnIndexOrThrow("name")));
+//                    Log.i("DB HELPER", "Project = " + project + " Project Name = " + project.getProjectName());
+                    Log.i("DB HELPER",  "Project ID = " + cursor.getInt(cursor.getColumnIndexOrThrow("eventId")));
+                    Log.i("DB HELPER", "User ID = " + cursor.getInt(cursor.getColumnIndexOrThrow("userId")));
+                    Log.i("DB HELPER", "Status Reward = " + cursor.getInt(cursor.getColumnIndexOrThrow("rewardStatus")));
+                }while(cursor.moveToNext());
+
+            }
+
+            cursor.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        db.close();
+        return userProjects;
+    }
+
+    public boolean getUserProjectRewardStatus(int userId, int eventId){
+
+        Log.i("DB HELPER = ", " User ID = " + userId + "Event ID = " + eventId);
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT rewardStatus FROM User_volunteer_event WHERE userId = ? AND eventId = ?", new String[]{String.valueOf(userId), String.valueOf(eventId)});
+
+        boolean rewardStatus = false;
+        if(cursor.moveToFirst()){
+            if(cursor.getInt(cursor.getColumnIndexOrThrow("rewardStatus")) == 1){
+                rewardStatus = true;
+                Log.i("DB HELPER", " REWARD STATUS ? = " + rewardStatus + "cursor ? = " + cursor.getInt(cursor.getColumnIndexOrThrow("rewardStatus")) );
+            }
+        }
+        cursor.close();
+        db.close();
+        return rewardStatus;
+    }
+
+    public void updateUserProjectStatus(int userId, int eventId){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query = "UPDATE User_volunteer_event SET rewardStatus = 0 WHERE userId = ? AND eventId = ?";
+        db.execSQL(query, new String[]{String.valueOf(userId), String.valueOf(eventId)});
+        db.close();
+    }
+
+    public void updateUserPoint(int userId, int point){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query = "UPDATE User SET volunteerPoints = volunteerPoints + ? WHERE userId = ?";
+        db.execSQL(query, new Object[]{point, String.valueOf(userId)});
+        db.close();
     }
 }

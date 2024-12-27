@@ -45,7 +45,7 @@ public class HomeViewModel extends ViewModel {
         if (id != -1) {
             User user = db.getUserById(id);
             if (user != null) {
-                userData.setValue(user); // Update LiveData
+                userData.setValue(user);
                 Log.d("HomeViewModel", "User found: " + user.getName());
             } else {
                 Log.d("HomeViewModel", "User not found");

@@ -5,6 +5,10 @@ public class Organizer {
     private int organizerLogo;
     private String organizerDesc;
 
+    public Organizer(int organizerLogo) {
+        this.organizerLogo = organizerLogo;
+    }
+
     public Organizer(String organizerName, int organizerLogo, String organizerDesc) {
         this.organizerName = organizerName;
         this.organizerLogo = organizerLogo;

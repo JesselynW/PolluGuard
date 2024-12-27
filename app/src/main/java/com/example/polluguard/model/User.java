@@ -3,10 +3,13 @@ package com.example.polluguard.model;
 import android.graphics.Bitmap;
 
 public class User {
+    private int userId;
     private String name;
     private String email;
     private String password;
+    private String phoneNumber;
     private int volunteerPoints;
+    private String dateOfBirth;
     private Bitmap image;
 
     public User(String name, String email, String password, int volunteerPoints, Bitmap image) {
@@ -15,6 +18,14 @@ public class User {
         this.password = password;
         this.volunteerPoints = volunteerPoints;
         this.image = image;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getName() {
@@ -41,12 +52,28 @@ public class User {
         this.password = password;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public int getVolunteerPoints() {
         return volunteerPoints;
     }
 
     public void setVolunteerPoints(int volunteerPoints) {
         this.volunteerPoints = volunteerPoints;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Bitmap getImage() {

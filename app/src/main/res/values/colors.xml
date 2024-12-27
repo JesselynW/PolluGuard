@@ -6,6 +6,7 @@
     <color name="red">#D61A1A</color>
     <color name="lightBlue">#D7E9F7</color>
     <color name="yellowCoupon">#FDE870</color>
+    <color name="grayCoupon">#AFB1B6</color>
     <color name="aqiGood">#38A925</color>
     <color name="aqiModerate">#FFDE1F</color>
     <color name="aqiUnhealthySensitiveGroup">#FF981F</color>

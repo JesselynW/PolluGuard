@@ -58,7 +58,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/circle_shape"
                 android:clipToOutline="true"
-                tools:src="@tools:sample/avatars" />
+                tools:src="@tools:sample/avatars"
+                android:scaleType="centerCrop" />
 
         </LinearLayout>
 

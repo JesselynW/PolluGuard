@@ -17,12 +17,14 @@
         android:theme="@style/Theme.PolluGuard"
         tools:targetApi="31">
         <activity
+            android:name=".UserProjectActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
             android:name=".ui.ProjectDetails"
             android:exported="false" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />
@@ -45,7 +47,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/title_activity_home"></activity>
+            android:label="@string/title_activity_home" />
     </application>
 
 </manifest>
