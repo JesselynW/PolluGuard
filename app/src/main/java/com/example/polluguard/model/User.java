@@ -3,7 +3,6 @@ package com.example.polluguard.model;
 import android.graphics.Bitmap;
 
 public class User {
-    private int userId;
     private String name;
     private String email;
     private String password;
@@ -18,14 +17,6 @@ public class User {
         this.password = password;
         this.volunteerPoints = volunteerPoints;
         this.image = image;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public String getName() {

@@ -12,7 +12,7 @@
     <LinearLayout
         android:id="@+id/titleContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="210dp"
         android:background="@drawable/blue_background"
         android:gravity="center"
         android:orientation="vertical"
@@ -62,7 +62,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:padding="15dp">
+        android:padding="20dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/userProjectRecyclerView_userProjectActivity"

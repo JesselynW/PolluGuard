@@ -19,8 +19,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.polluguard.EditProfileActivity;
 import com.example.polluguard.UserProjectActivity;
 import com.example.polluguard.adapter.UserProjectAdapter;
 import com.example.polluguard.databinding.FragmentProfileBinding;
@@ -47,6 +49,8 @@ public class ProfileFragment extends Fragment implements ProjectOnClick {
     SwipeRefreshLayout swipeRefreshLayout;
     TextView etName, etPoint, etProjectSeeMore;
     ImageView ivProfile;
+
+    LinearLayout editProfileButton;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -78,6 +82,8 @@ public class ProfileFragment extends Fragment implements ProjectOnClick {
 
         etProjectSeeMore = binding.projectSeeMore;
 
+        editProfileButton = binding.editProfileButton;
+
        profileViewModel.initialize(getContext());
 
        profileViewModel.getUserLiveData().observe(getViewLifecycleOwner(), user -> {
@@ -98,6 +104,11 @@ public class ProfileFragment extends Fragment implements ProjectOnClick {
 
        etProjectSeeMore.setOnClickListener(v -> {
            Intent intent = new Intent(getActivity(), UserProjectActivity.class);
+           startActivity(intent);
+       });
+
+       editProfileButton.setOnClickListener(v -> {
+           Intent intent = new Intent(getActivity(), EditProfileActivity.class);
            startActivity(intent);
        });
 

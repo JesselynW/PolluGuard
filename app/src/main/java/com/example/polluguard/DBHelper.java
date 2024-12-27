@@ -145,10 +145,30 @@ public class DBHelper extends SQLiteOpenHelper {
 
         long checkQuery = db.insert("User", null, values);
         if(checkQuery == -1) return false;
-        else {
-            user.setUserId((int)checkQuery);
-            return true;
-        }
+        else return true;
+
+
+    }
+
+    public boolean updateUser(User user, int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Bitmap image = user.getImage();
+        byteArrayOutputStream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byteImage = byteArrayOutputStream.toByteArray();
+
+        ContentValues values = new ContentValues();
+        values.put("name", user.getName());
+        values.put("email", user.getEmail());
+        if(!user.getPassword().equals("")) values.put("password", user.getPassword());
+        else if(user.getPhoneNumber() != null) values.put("phoneNumber", user.getPhoneNumber());
+        if(user.getImage() != null) values.put("image", byteImage);
+
+        long checkQuery = db.update("User", values, "userId = ?", new String[]{String.valueOf(id)});
+        Log.i("DB HELPER UPDATE", "CHECK QUERY = " + checkQuery);
+        if(checkQuery == -1) return false;
+        else return true;
 
     }
 
@@ -486,5 +506,42 @@ public class DBHelper extends SQLiteOpenHelper {
         String query = "UPDATE User SET volunteerPoints = volunteerPoints + ? WHERE userId = ?";
         db.execSQL(query, new Object[]{point, String.valueOf(userId)});
         db.close();
+    }
+
+    public boolean validatePassword(String currentPassword, String oldPassword){
+        if(!currentPassword.equals(oldPassword)) return false;
+        else return true;
+    }
+
+    public void validateProfile(Context context, int id, String name, String email, String oldPw, String newPw, String phoneNumber, Bitmap bitmap) {
+        User user = getUserById(id);
+        if(name.equals("")){
+            Toast.makeText(context, "Please fill your name", Toast.LENGTH_SHORT).show();
+        }
+        else if(email.equals("")){
+            Toast.makeText(context, "Please fill your email", Toast.LENGTH_SHORT).show();
+        }
+        else if(oldPw.equals("") && !newPw.equals("")){
+            Toast.makeText(context, "Please fill your old password to change it", Toast.LENGTH_SHORT).show();
+        }
+        else if(!oldPw.equals("") && newPw.equals("")){
+            Toast.makeText(context, "Please fill your new password to change it", Toast.LENGTH_SHORT).show();
+        }
+        else if(!oldPw.equals("") && !newPw.equals("") && !validatePassword(user.getPassword(), oldPw)){
+            Toast.makeText(context, "Your old password is incorrect", Toast.LENGTH_SHORT).show();
+        }
+        else if(!phoneNumber.equals("") && phoneNumber.length() < 10 || phoneNumber.length() > 12){
+            Toast.makeText(context, "Phone number length must be between 10-12 digits", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            user.setName(name);
+            user.setEmail(email);
+            if(!oldPw.equals("") && !newPw.equals("")) user.setPassword(newPw);
+            if(!phoneNumber.equals("")) user.setPhoneNumber(phoneNumber);
+            if(bitmap != null) user.setImage(bitmap);
+            Log.i("DB HELPER USERRR di dalam", "user name = " + user.getName() + user.getEmail() + user.getPassword()+ user.getImage());
+             updateUser(user, id);
+        }
+        Log.i("DB HELPER USERRR", "user name = " + user.getName() + user.getEmail() + user.getPassword()+ user.getImage());
     }
 }
