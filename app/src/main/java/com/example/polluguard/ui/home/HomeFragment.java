@@ -9,9 +9,11 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -162,10 +164,19 @@ public class HomeFragment extends Fragment {
         btnLearnMore.setOnClickListener(v -> {
             View popupView = getLayoutInflater().inflate(R.layout.popup_information, null);
 
-            int viewWidth = v.getWidth();
+//            int viewWidth = v.getWidth();
+            Display display = getActivity().getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            int viewWidth = size.x;
+
+            float density = getResources().getDisplayMetrics().density;
+            int margin = (int) (40 * density);
+
+            int widthWithMargin = viewWidth - margin;
 
             PopupWindow popupWindow = new PopupWindow(popupView,
-                    viewWidth,
+                    widthWithMargin,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
 
 
