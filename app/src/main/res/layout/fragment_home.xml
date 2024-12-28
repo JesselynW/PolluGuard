@@ -14,53 +14,105 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/gradient_background">
 
-
-
-        <LinearLayout
-            android:id="@+id/linearLayout"
+        <View
+            android:id="@+id/blueBackground"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="1dp"
-            android:orientation="horizontal"
-            android:padding="10dp"
-            app:layout_constraintBottom_toTopOf="@id/linearLayout2"
+            android:layout_height="120dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/blue_background">
+
+        </View>
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="10"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:background="@drawable/rounded_corners"
+                android:layout_marginTop="-70dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_toTopOf="@id/statusContainer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/blueBackground"
+                android:elevation="10dp">
 
-                <TextView
-                    android:id="@+id/TextView"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Welcome" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="10"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Full Name" />
+                    <TextView
+                        android:id="@+id/TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Welcome,"
+                        android:textSize="20dp"
+                        android:textColor="@color/black"/>
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Full Name"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:textAllCaps="true"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:background="@drawable/circle_shape"
+                    android:clipToOutline="true"
+                    tools:src="@tools:sample/avatars"
+                    android:scaleType="centerCrop" />
 
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/image"
-                android:layout_width="46dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:background="@drawable/circle_shape"
-                android:clipToOutline="true"
-                tools:src="@tools:sample/avatars"
-                android:scaleType="centerCrop" />
+        <LinearLayout
+            android:id="@+id/statusContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/red"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintBottom_toTopOf="@id/linearLayout2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
 
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="45dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Unhealthy"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:layout_gravity="top"/>
         </LinearLayout>
 
         <LinearLayout
@@ -68,50 +120,107 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="10dp"
-            android:layout_marginBottom="6dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintTop_toBottomOf="@+id/statusContainer"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
-            >
+            android:background="@drawable/rounded_corners"
+            android:elevation="10dp"
+            android:layout_marginTop="-38dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
 
-            <TextView
-                android:id="@+id/status"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:text="Unhealthy" />
 
-            <TextView
-                android:id="@+id/current_location"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="Current Location" />
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp">
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/location_arrow"
+                    android:layout_marginRight="5dp"
+                    android:layout_gravity="center"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/current_location"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Current Location"
+                        android:textSize="18dp"/>
+                    <TextView
+                        android:id="@+id/last_updated"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Last Updated"
+                        android:textSize="12dp"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="vertical">
+                android:layout_marginBottom="10dp">
+                <com.example.polluguard.ui.home.ProgressBarCircle
+                    android:id="@+id/progressBar"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+app:layout_constraintBottom_toBottomOf="parent">
 
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="AQI"
-                    android:textAlignment="center" />
 
-                <TextView
-                    android:id="@+id/aqi"
+                </com.example.polluguard.ui.home.ProgressBarCircle>
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0"
-                    android:text="AQI Score"
-                    android:textSize="28dp"
-                    android:layout_marginBottom="10dp"/>
-            </LinearLayout>
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:padding="2dp">
+
+
+
+                    <TextView
+                        android:id="@+id/aqi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="000"
+                        android:textSize="40dp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="AQI"
+                        android:textSize="20dp"
+                        android:textColor="@color/black"
+                        android:textAlignment="center"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
 
             <Button
                 android:id="@+id/learnMoreButton"
@@ -129,19 +238,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="10dp"
-            android:layout_marginBottom="6dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
             app:layout_constraintBottom_toTopOf="@id/linearLayout4"
-            >
+            android:background="@drawable/rounded_corners"
+            android:elevation="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="15dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
                 android:src="@drawable/indonesia_aqi_map"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/rounded_corners"
+                android:clipToOutline="true"
+                android:scaleType="centerCrop"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -153,25 +273,32 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="5dp"
-                    >
+                    android:layout_marginBottom="8dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Good"
+                        android:textSize="12dp"
                         android:textColor="@color/white"
-                        android:background="@color/aqiGood"
-                        android:padding="5dp"
-                        android:layout_marginRight="10dp"
+                        android:backgroundTint="@color/aqiGood"
+                        android:background="@drawable/rounded_corners_5"
+                        android:paddingLeft="6dp"
+                        android:paddingRight="6dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:layout_marginRight="10dp" />
 
-                        />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Moderate"
                         android:textColor="@color/white"
-                        android:background="@color/aqiModerate"
-                        android:padding="5dp"
+                        android:textSize="12dp"
+                        android:backgroundTint="@color/aqiModerate" android:background="@drawable/rounded_corners_5"
+                        android:paddingLeft="6dp"
+                        android:paddingRight="6dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
                         android:layout_marginRight="10dp"/>
 
                     <TextView
@@ -179,8 +306,12 @@
                         android:layout_height="wrap_content"
                         android:text="Unhealthy for Sensitive Groups"
                         android:textColor="@color/white"
-                        android:background="@color/aqiUnhealthySensitiveGroup"
-                        android:padding="5dp"/>
+                        android:textSize="12dp"
+                        android:backgroundTint="@color/aqiUnhealthySensitiveGroup" android:background="@drawable/rounded_corners_5"
+                        android:paddingLeft="6dp"
+                        android:paddingRight="6dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -194,8 +325,12 @@
                         android:text="Unhealthy"
                         android:layout_marginRight="10dp"
                         android:textColor="@color/white"
-                        android:background="@color/aqiUnhealthy"
-                        android:padding="5dp"/>
+                        android:textSize="12dp"
+                        android:backgroundTint="@color/aqiUnhealthy" android:background="@drawable/rounded_corners_5"
+                        android:paddingLeft="6dp"
+                        android:paddingRight="6dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -203,16 +338,24 @@
                         android:text="Very Unhealthy"
                         android:layout_marginRight="10dp"
                         android:textColor="@color/white"
-                        android:background="@color/aqiVeryUnhealthy"
-                        android:padding="5dp"/>
+                        android:textSize="12dp"
+                        android:backgroundTint="@color/aqiVeryUnhealthy" android:background="@drawable/rounded_corners_5"
+                        android:paddingLeft="6dp"
+                        android:paddingRight="6dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Hazardous"
                         android:textColor="@color/white"
-                        android:background="@color/aqiHazardous"
-                        android:padding="5dp"/>
+                        android:textSize="12dp"
+                        android:backgroundTint="@color/aqiHazardous" android:background="@drawable/rounded_corners_5"
+                        android:paddingLeft="6dp"
+                        android:paddingRight="6dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -228,17 +371,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginBottom="6dp"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/linearLayout5"
-            android:padding="10dp">
+            android:background="@drawable/rounded_corners"
+            android:elevation="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="15dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="175dp"
                 android:src="@drawable/volunteer_banner"
+                android:background="@drawable/rounded_corners"
+                android:clipToOutline="true"
+                android:scaleType="centerCrop"
                 android:layout_marginBottom="10dp"/>
             <Button
                 android:id="@+id/volunteerButton"
@@ -256,16 +410,22 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="100dp"
-            android:padding="10dp">
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="100dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Articles"
+                android:textSize="20dp"
+                android:textColor="@color/black"
                 android:textStyle="bold"/>
 
         </LinearLayout>
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

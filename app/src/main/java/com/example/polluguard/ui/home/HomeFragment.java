@@ -1,9 +1,11 @@
 package com.example.polluguard.ui.home;
 
 import android.Manifest;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -26,6 +28,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -52,6 +55,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -68,8 +73,10 @@ public class HomeFragment extends Fragment {
     SharedPreferences sp;
 
     Button btnLearnMore, btnMap, btnVolunteer;
-    TextView etName, etLocation, etAqi, etStatus;
+    TextView etName, etLocation, etAqi, etStatus, etLastUpdated;
     ImageView ivProfile;
+    LinearLayout statusContainer;
+    ProgressBarCircle aqiCircle;
 
     private DBHelper dbHelper;
     private HomeViewModel homeViewModel;
@@ -100,14 +107,18 @@ public class HomeFragment extends Fragment {
 
         etStatus = binding.status;
         etLocation = binding.currentLocation;
+        aqiCircle = binding.progressBar;
         etAqi = binding.aqi;
+
+        etLastUpdated = binding.lastUpdated;
+        statusContainer = binding.statusContainer;
 
         homeViewModel.initialize(getContext());
 
 
         homeViewModel.getUserLiveData().observe(getViewLifecycleOwner(), user -> {
             if(user != null) {
-                etName.setText(user.getName());
+                etName.setText(user.getName() + "!");
                 ivProfile.setImageBitmap(user.getImage());
             }
         });
@@ -138,6 +149,13 @@ public class HomeFragment extends Fragment {
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION
         });
+
+
+
+
+
+
+
 
 
 
@@ -184,6 +202,54 @@ public class HomeFragment extends Fragment {
         });
 
         return root;
+    }
+
+    private void initializeAQICard(double nearestLocationAqi) {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm, dd MMMM yyyy");
+        String currDateTime = sdf.format(new Date());
+
+        etLastUpdated.setText("Last Updated " + currDateTime);
+
+        aqiCircle.setAqiPercentage((float) nearestLocationAqi);
+        Log.i("DI DALAM INITIALIZE AQI CIRCLE BAR", "nearestLocationAqi = " + nearestLocationAqi  + "(float)nearestLocationAqi = " + (float) nearestLocationAqi);
+        String nearestLocationAqiLevel = AirPollutionLevel.getAQILevel(nearestLocationAqi);
+
+        Log.i("DI DALAM INITIALIZE AQI CIRCLE BAR", "CASE = " + nearestLocationAqiLevel);
+
+        switch (nearestLocationAqiLevel) {
+            case "Good":
+                aqiCircle.setCircleColor(R.color.aqiGood);
+                statusContainer.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.aqiGood)));
+                break;
+            case "Moderate":
+                aqiCircle.setCircleColor(R.color.aqiModerate);
+                statusContainer.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.aqiModerate)));
+                etStatus.setTextColor(getResources().getColor(R.color.black));
+                break;
+            case "Unhealthy for Sensitive Groups":
+                aqiCircle.setCircleColor(R.color.aqiUnhealthySensitiveGroup);
+                statusContainer.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.aqiUnhealthySensitiveGroup)));
+                break;
+            case "Unhealthy":
+                aqiCircle.setCircleColor(R.color.aqiUnhealthy);
+                statusContainer.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.aqiUnhealthy)));
+                break;
+            case "Very Unhealthy":
+                aqiCircle.setCircleColor(R.color.aqiVeryUnhealthy);
+                statusContainer.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.aqiVeryUnhealthy)));
+                break;
+            case "Hazardous":
+                aqiCircle.setCircleColor(R.color.aqiHazardous);
+                statusContainer.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.aqiHazardous)));
+            default:
+                aqiCircle.setCircleColor(R.color.darkGray);
+                statusContainer.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.darkGray)));
+                break;
+        }
+
+        ObjectAnimator animator = ObjectAnimator.ofFloat(aqiCircle, "aqiPercentage", 0, (int)nearestLocationAqi);
+        animator.setDuration(2000);
+        animator.start();
     }
 
 
@@ -233,7 +299,7 @@ public class HomeFragment extends Fragment {
                 if(response.isSuccessful() && response.body() != null){
                     double minDistance = RADIUS;
                     String nearestStation = "";
-                    String nearestLocationAqi = "";
+                    double nearestLocationAqi = 0;
 
                     AirQualityResponse airQualityResponse = response.body();
                     List<AirQuality> airQualityList = airQualityResponse.getData();
@@ -249,16 +315,18 @@ public class HomeFragment extends Fragment {
                         if(distance < minDistance){
                             minDistance = distance;
                             nearestStation = airQuality.getStation().getName();
-                            nearestLocationAqi = Double.toString(aqi);
+                            nearestLocationAqi = aqi;
                         }
 
                     }
 
                     Log.i("NEAREST LOCATION", "LOCATION =  " + nearestStation + " aqi =  " + nearestLocationAqi);
-                    String nearestAqiLevel = AirPollutionLevel.getAQILevel(Double.parseDouble(nearestLocationAqi));
-                    etStatus.setText(nearestAqiLevel);
+                    String nearestLocationAqiLevel = AirPollutionLevel.getAQILevel(nearestLocationAqi);
+                    Log.i("NEAREST LOCATION LEVEL", "nearestLocationAqiLevel = " + nearestLocationAqiLevel);
+                    initializeAQICard(nearestLocationAqi);
+                    etStatus.setText(nearestLocationAqiLevel);
                     etLocation.setText(nearestStation);
-                    etAqi.setText(nearestLocationAqi);
+                    etAqi.setText(String.valueOf((int) nearestLocationAqi));
                 }
                 else {
                     Toast.makeText(getContext(), "Failed to get API", Toast.LENGTH_SHORT).show();
