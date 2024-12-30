@@ -6,11 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -35,14 +31,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import com.example.polluguard.DBHelper;
-import com.example.polluguard.MapFragment;
+import com.example.polluguard.ui.map.MapFragment;
 import com.example.polluguard.R;
 import com.example.polluguard.databinding.FragmentHomeBinding;
-import com.example.polluguard.model.User;
 import com.example.polluguard.network.AirQuality;
 import com.example.polluguard.network.AirQualityResponse;
 import com.example.polluguard.network.AirQualityService;
@@ -52,10 +46,7 @@ import com.example.polluguard.tools.LocationBoundCalculator;
 import com.example.polluguard.tools.NearestDistanceCalculator;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -252,6 +243,7 @@ public class HomeFragment extends Fragment {
             case "Hazardous":
                 aqiCircle.setCircleColor(R.color.aqiHazardous);
                 statusContainer.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.aqiHazardous)));
+                break;
             default:
                 aqiCircle.setCircleColor(R.color.darkGray);
                 statusContainer.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.darkGray)));
