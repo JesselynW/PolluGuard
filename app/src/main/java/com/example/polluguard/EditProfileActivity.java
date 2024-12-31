@@ -141,7 +141,7 @@ public class EditProfileActivity extends AppCompatActivity {
             etName.setText(user.getName());
             etEmail.setText(user.getEmail());
             etPhoneNumber.setText(user.getPhoneNumber()); // phone number nya masih gak bisa
-            Log.i("gaada kah? = ", "test = " + user.getPhoneNumber());
+            Log.i("gaada kah? = ", "test = " + user.getPhoneNumber() + " user.getName() = " + user.getName());
         }
     }
 

@@ -11,10 +11,11 @@ public class User {
     private String dateOfBirth;
     private Bitmap image;
 
-    public User(String name, String email, String password, int volunteerPoints, Bitmap image) {
+    public User(String name, String email, String password, String phoneNumber, int volunteerPoints, Bitmap image) {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.phoneNumber = phoneNumber;
         this.volunteerPoints = volunteerPoints;
         this.image = image;
     }

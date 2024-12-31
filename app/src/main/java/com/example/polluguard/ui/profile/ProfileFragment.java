@@ -1,5 +1,7 @@
 package com.example.polluguard.ui.profile;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
@@ -18,11 +20,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.polluguard.EditProfileActivity;
+import com.example.polluguard.LoginActivity;
 import com.example.polluguard.UserProjectActivity;
 import com.example.polluguard.adapter.UserProjectAdapter;
 import com.example.polluguard.databinding.FragmentProfileBinding;
@@ -49,7 +53,7 @@ public class ProfileFragment extends Fragment implements ProjectOnClick {
     SwipeRefreshLayout swipeRefreshLayout;
     TextView etName, etPoint, etProjectSeeMore;
     ImageView ivProfile;
-
+    Button logoutButton;
     LinearLayout editProfileButton;
 
 
@@ -61,7 +65,7 @@ public class ProfileFragment extends Fragment implements ProjectOnClick {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        sp = getContext().getSharedPreferences("UserData", Context.MODE_PRIVATE);
+        sp = getContext().getSharedPreferences("UserData", MODE_PRIVATE);
         userId = sp.getInt("user_id", -1);
 
         swipeRefreshLayout = binding.refreshLayout;
@@ -82,6 +86,7 @@ public class ProfileFragment extends Fragment implements ProjectOnClick {
 
         etProjectSeeMore = binding.projectSeeMore;
 
+        logoutButton = binding.logoutButton;
         editProfileButton = binding.editProfileButton;
 
        profileViewModel.initialize(getContext());
@@ -109,6 +114,16 @@ public class ProfileFragment extends Fragment implements ProjectOnClick {
 
        editProfileButton.setOnClickListener(v -> {
            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+           startActivity(intent);
+       });
+
+       logoutButton.setOnClickListener(v -> {
+           SharedPreferences shp = v.getContext().getSharedPreferences("UserPrefs", MODE_PRIVATE);
+           SharedPreferences.Editor editor = shp.edit();
+           editor.putBoolean("isLoggedIn", false);
+           editor.apply();
+
+           Intent intent = new Intent(getActivity(), LoginActivity.class);
            startActivity(intent);
        });
 
