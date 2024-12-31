@@ -5,24 +5,21 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
+    <action android:id="@+id/action_pop_out"
+        app:popUpTo="@id/mobile_navigation"
+        app:popUpToInclusive="true" />
+
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.polluguard.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home">
-        <action
-            android:id="@+id/home_to_map"
-            app:destination="@id/navigation_map" />
-        <action
-            android:id="@+id/home_to_volunteer"
-            app:destination="@id/navigation_volunteer" />
-    </fragment>
+        tools:layout="@layout/fragment_home"/>
 
     <fragment
         android:id="@+id/navigation_volunteer"
         android:name="com.example.polluguard.ui.volunteer.VolunteerFragment"
         android:label="@string/title_volunteer"
-        tools:layout="@layout/fragment_volunteer" />
+        tools:layout="@layout/fragment_volunteer"/>
 
     <fragment
         android:id="@+id/navigation_map"

@@ -25,8 +25,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.polluguard.model.User;
+import com.example.polluguard.ui.profile.ProfileFragment;
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -68,16 +71,9 @@ public class EditProfileActivity extends AppCompatActivity {
 
         sp = getSharedPreferences("UserData", Context.MODE_PRIVATE);
         int id = sp.getInt("user_id", -1);
-
         DBHelper dbHelper = new DBHelper(this);
-        user = dbHelper.getUserById(id);
 
-        if(user != null){
-            ivProfile.setImageBitmap(user.getImage());
-            etName.setText(user.getName());
-            etEmail.setText(user.getEmail());
-            etPhoneNumber.setText(user.getPhoneNumber());
-        }
+        loadUserData(dbHelper, id);
 
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
@@ -122,11 +118,31 @@ public class EditProfileActivity extends AppCompatActivity {
             String phoneNumber = etPhoneNumber.getText().toString();
 
             dbHelper.validateProfile(this, id, name, email, oldPw, newPw, phoneNumber, bitmapImage);
-            Log.i("edit profile activity", "old pw = " + oldPw + " new pw = " + newPw);
+//            if(isValid) {
+//                Fragment fragment = new ProfileFragment();
+//                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//                transaction.replace(R.id.nav_host_fragment_activity_home, fragment);
+//                transaction.addToBackStack(null);
+//                transaction.commit();
+//            }
+            loadUserData(dbHelper, id);
         });
 
         backButton.setOnClickListener(v -> {
             onBackPressed();
         });
     }
+
+    public void loadUserData(DBHelper dbHelper, int id){
+        user = dbHelper.getUserById(id);
+
+        if(user != null){
+            ivProfile.setImageBitmap(user.getImage());
+            etName.setText(user.getName());
+            etEmail.setText(user.getEmail());
+            etPhoneNumber.setText(user.getPhoneNumber()); // phone number nya masih gak bisa
+            Log.i("gaada kah? = ", "test = " + user.getPhoneNumber());
+        }
+    }
+
 }

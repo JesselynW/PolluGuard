@@ -3,6 +3,7 @@
     <style name="Base.Theme.PolluGuard" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
          <item name="colorPrimary">@color/blue</item>
+
     </style>
 
     <style name="Theme.PolluGuard" parent="Base.Theme.PolluGuard" />

@@ -151,6 +151,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public boolean updateUser(User user, int id) {
+        Log.i("DB HELPER UPDATE", "CHECK PHONE NUMBER pertama sebelum update= " + user.getPhoneNumber());
         SQLiteDatabase db = this.getWritableDatabase();
 
         Bitmap image = user.getImage();
@@ -162,10 +163,16 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put("name", user.getName());
         values.put("email", user.getEmail());
         if(!user.getPassword().equals("")) values.put("password", user.getPassword());
-        else if(user.getPhoneNumber() != null) values.put("phoneNumber", user.getPhoneNumber());
+        if(user.getPhoneNumber() != null){
+            Log.i("DB HELPER UDPATE", "MASUK KAH?");
+            values.put("phoneNumber", user.getPhoneNumber());
+        }
         if(user.getImage() != null) values.put("image", byteImage);
 
+
         long checkQuery = db.update("User", values, "userId = ?", new String[]{String.valueOf(id)});
+        Log.i("DB HELPER UPDATE", "CHECK PHONE NUMBER= " + values.get("phoneNumber"));
+        Log.i("DB HELPER UPDATE", "CHECK PHONE NUMBER setelah update= " + user.getPhoneNumber());
         Log.i("DB HELPER UPDATE", "CHECK QUERY = " + checkQuery);
         if(checkQuery == -1) return false;
         else return true;
@@ -538,10 +545,12 @@ public class DBHelper extends SQLiteOpenHelper {
             user.setEmail(email);
             if(!oldPw.equals("") && !newPw.equals("")) user.setPassword(newPw);
             if(!phoneNumber.equals("")) user.setPhoneNumber(phoneNumber);
+            Log.i("DI DALAM DB HELPER = ", "USER PHONE NUMBER? = " + user.getPhoneNumber());
             if(bitmap != null) user.setImage(bitmap);
-            Log.i("DB HELPER USERRR di dalam", "user name = " + user.getName() + user.getEmail() + user.getPassword()+ user.getImage());
-             updateUser(user, id);
+            updateUser(user, id);
+            Toast.makeText(context, "Successfully change profile!", Toast.LENGTH_SHORT).show();
+
         }
-        Log.i("DB HELPER USERRR", "user name = " + user.getName() + user.getEmail() + user.getPassword()+ user.getImage());
+
     }
 }

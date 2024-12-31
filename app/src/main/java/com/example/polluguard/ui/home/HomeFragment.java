@@ -31,6 +31,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.polluguard.DBHelper;
@@ -47,6 +48,7 @@ import com.example.polluguard.tools.NearestDistanceCalculator;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -191,18 +193,23 @@ public class HomeFragment extends Fragment {
 //                    .build();
 //            Navigation.findNavController(v).navigate(R.id.navigation_map, null, options);
 
-            Fragment fragment = new MapFragment();
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, fragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+            BottomNavigationView navView = requireActivity().findViewById(R.id.nav_view);
+
+            NavController navController = Navigation.findNavController(requireView());
+            navController.navigate(R.id.navigation_map);
+            navView.setSelectedItemId(R.id.navigation_map);
         });
 
         btnVolunteer.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.home_to_volunteer);
-        });
+            BottomNavigationView navView = requireActivity().findViewById(R.id.nav_view);
 
+            NavController navController = Navigation.findNavController(requireView());
+            navController.navigate(R.id.navigation_volunteer);
+            navView.setSelectedItemId(R.id.navigation_volunteer);
+//            navController.navigateUp();
+        });
+//        NavController navController = Navigation.findNavController(requireView());
+//        navController.navigateUp();
         return root;
     }
 
