@@ -61,8 +61,6 @@ public class LoginActivity extends AppCompatActivity {
             email = etEmail.getText().toString();
             pass = etPassword.getText().toString();
 
-            Toast.makeText(this, "email: " + email + "pass: " + pass, Toast.LENGTH_SHORT).show();
-
             if(email.equals("") || pass.equals("")){
                 Toast.makeText(LoginActivity.this, "Please fill all the fields", Toast.LENGTH_SHORT).show();
             }

@@ -11,6 +11,8 @@ public class Project implements Serializable {
     private String about;
     private int reward;
     private int slot;
+    private String linkWhatsapp;
+    private int whatsappQR;
     private Organizer organizer;
 
     public int getImageProject() {
@@ -83,5 +85,21 @@ public class Project implements Serializable {
 
     public void setOrganizer(Organizer organizer) {
         this.organizer = organizer;
+    }
+
+    public String getLinkWA() {
+        return linkWhatsapp;
+    }
+
+    public void setLinkWA(String linkWA) {
+        this.linkWhatsapp = linkWA;
+    }
+
+    public int getQr() {
+        return whatsappQR;
+    }
+
+    public void setQr(int qr) {
+        this.whatsappQR = qr;
     }
 }

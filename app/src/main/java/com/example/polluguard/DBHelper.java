@@ -7,13 +7,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.example.polluguard.model.Article;
 import com.example.polluguard.model.Organizer;
 import com.example.polluguard.model.Project;
 import com.example.polluguard.model.User;
+import com.google.android.material.shape.CutCornerTreatment;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -94,6 +97,7 @@ public class DBHelper extends SQLiteOpenHelper {
         addUser(db);
         addOrganizer(db);
         addEvent(db);
+        addArticle(db);
     }
 
     @Override
@@ -241,7 +245,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String query = "SELECT ve.name, ve.image, ve.date, ve.time, ve.location, ve.about, " +
-                        "ve.reward, ve.slot, o.name AS organizerName, o.logo AS organizerLogo, o.description AS organizerDesc " +
+                        "ve.reward, ve.slot, ve.linkWhatsapp, ve.whatsappQR, o.name AS organizerName, o.logo AS organizerLogo, o.description AS organizerDesc " +
                         "FROM Volunteer_event AS ve " +
                         "INNER JOIN Organizer AS o ON ve.organizerId = o.organizerId";
         Cursor cursor = db.rawQuery(query, null);
@@ -258,6 +262,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 project.setAbout(cursor.getString(cursor.getColumnIndexOrThrow("about")));
                 project.setReward(cursor.getInt(cursor.getColumnIndexOrThrow("reward")));
                 project.setSlot(cursor.getInt(cursor.getColumnIndexOrThrow("slot")));
+                project.setLinkWA(cursor.getString(cursor.getColumnIndexOrThrow("linkWhatsapp")));
+                project.setQr(cursor.getInt(cursor.getColumnIndexOrThrow("whatsappQR")));
                 project.setOrganizer(new Organizer(
                         cursor.getString(cursor.getColumnIndexOrThrow("organizerName")),
                         cursor.getInt(cursor.getColumnIndexOrThrow("organizerLogo")),
@@ -307,5 +313,82 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return projects;
+    }
+
+    public void insertUserVolunteerEvent(int userId, String eventName){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query = "SELECT eventId FROM Volunteer_Event WHERE name = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{eventName});
+
+        String query2 = "SELECT * FROM User_volunteer_event WHERE userId = ? AND eventId = ?";
+
+        if(cursor.moveToFirst()){
+            int eventId = cursor.getInt(cursor.getColumnIndexOrThrow("eventId"));
+
+            Cursor cursor1 = db.rawQuery(query2, new String[]{String.valueOf(userId), String.valueOf(eventId)});
+
+            if(!cursor1.moveToFirst()){
+                ContentValues contentValues = new ContentValues();
+                contentValues.put("userId", userId);
+                contentValues.put("eventId", eventId);
+
+                db.insert("User_volunteer_event", null, contentValues);
+
+                Log.i("db insert", "successfully inserted data");
+            }
+
+            cursor1.close();
+        }
+
+        cursor.close();
+        db.close();
+    }
+
+    public void addArticle(SQLiteDatabase db){
+        db.execSQL("INSERT INTO Article VALUES(NULL, 'The Impact of Air Pollution on Public Health', 'Lestari Wibawa', '3 Desember 2024', 'Air pollution has become one of the most pressing environmental issues of our time. It leads to respiratory and cardiovascular diseases, impacts mental health, and increases mortality rates. The major sources of air pollution include vehicle emissions, industrial processes, deforestation, and burning of fossil fuels. Governments worldwide are implementing stricter regulations, while individuals can contribute by adopting eco-friendly habits like using public transportation and reducing waste. This article delves into the long-term effects on health, economic burdens, and innovative solutions like green technology.', " + R.drawable.article1 + ");");
+
+        db.execSQL("INSERT INTO Article VALUES(NULL, 'Understanding AQI: How to Measure Air Quality', 'Al Hamasih', '10 November 2024', 'The Air Quality Index (AQI) is a standardized tool that provides real-time information about air pollution levels. It is calculated based on pollutants like PM2.5, PM10, ozone, sulfur dioxide, nitrogen dioxide, and carbon monoxide. This article explains the color-coded system used in AQI reporting and its significance in warning vulnerable populations, including children, the elderly, and people with pre-existing conditions. Practical tips on how to interpret AQI data and adjust daily activities for better health protection are also covered.', " + R.drawable.article2 + ")");
+
+        db.execSQL("INSERT INTO Article VALUES(NULL, '10 Ways to Reduce Air Pollution in Your Community', 'Ali Jusuf', '15 Oktober 2024', 'Air pollution not only affects global ecosystems but also has immediate effects on local communities. This article lists 10 actionable ways to reduce air pollution, including switching to renewable energy, reducing vehicle usage, advocating for better public policies, and supporting clean energy initiatives. Community-driven actions such as planting trees, organizing recycling programs, and raising awareness about sustainable living can have a massive impact. Discover how small changes, when adopted collectively, can significantly improve air quality and public health.', " + R.drawable.article3 + ")");
+
+        db.execSQL("INSERT INTO Article VALUES(NULL, 'The Role of Environmentalists in Combating Climate Change', 'Kelly Yue', '25 September 2024', 'Environmentalists are at the forefront of combating climate change, engaging in activities like tree planting, waste management campaigns, and climate change advocacy. This article explores their essential contributions, including policy lobbying, community education, and research into alternative technologies. Highlighting successful case studies worldwide, it discusses how their relentless efforts inspire governments, corporations, and individuals to join the fight against climate change.', " + R.drawable.article4 + ")");
+
+        db.execSQL("INSERT INTO Article VALUES(NULL, 'Effects of Vehicle Emissions on Urban Air Quality', 'Laskar Cahyadi', '20 Agustus 2024', 'Urban areas face severe air quality degradation due to vehicle emissions, which release harmful pollutants like carbon monoxide, nitrogen oxides, and hydrocarbons. This article investigates the direct impact on urban populations, including increased cases of asthma, heart disease, and cancer. It also explores sustainable alternatives, such as electric vehicles, improved public transportation, and car-sharing initiatives. Learn about the latest technologies and policies designed to curb the environmental impact of transportation systems.', " + R.drawable.article5 + ")");
+
+        db.execSQL("INSERT INTO Article VALUES(NULL, 'The Link Between Deforestation and Air Quality', 'Sophia Sheryl Susanto', '10 September 2024', 'Deforestation not only contributes to climate change but also severely impacts air quality. Forests act as natural air filters, absorbing pollutants and producing oxygen. This article examines the reasons behind deforestation, its effects on biodiversity, and its role in amplifying air pollution. The article also highlights ongoing reforestation efforts and what individuals can do to support these initiatives, including donating to conservation projects or participating in tree-planting campaigns.', " + R.drawable.article6 + ")");
+
+        db.execSQL("INSERT INTO Article VALUES(NULL, 'How Industrial Pollution Affects Rural Areas', 'Hasan Imran', '12 Agustus 2024', 'Industrial pollution is often seen as an urban issue, but its impact on rural areas is significant and far-reaching. Pollutants from factories can travel long distances, contaminating water sources, soil, and air in rural regions. This article focuses on lesser-known consequences, such as the loss of agricultural productivity, health impacts on rural populations, and the challenges in monitoring and regulating these effects. It also discusses how industries can adopt cleaner production techniques to minimize their environmental footprint.', " + R.drawable.article7 + ")");
+
+        db.execSQL("INSERT INTO Article VALUES(NULL, 'Air Purifiers: Do They Really Improve Indoor Air Quality?', 'Olivia Setiawan', '11 July 2024', 'With indoor air pollution becoming a growing concern, air purifiers have emerged as a popular solution. This article provides an in-depth analysis of how air purifiers work, their effectiveness in removing various pollutants, and their limitations. It also covers tips on choosing the right air purifier based on room size, pollutant type, and budget. Finally, it evaluates alternative methods to improve indoor air quality, such as increasing ventilation and using natural air-cleaning plants.', " + R.drawable.article8 + ")");
+
+        db.execSQL("INSERT INTO Article VALUES(NULL, 'Plastic Waste and Its Contribution to Air Pollution', 'Emma Kusuma', '23 Juni 2024', 'Plastic waste is not just a land-based issue; it also contributes to air pollution. Burning plastic releases toxic chemicals like dioxins, furans, and carbon monoxide, which pose severe health and environmental risks. This article discusses the lifecycle of plastic, from production to disposal, and its cumulative impact on air quality. Solutions such as reducing plastic usage, adopting biodegradable materials, and promoting waste-to-energy technologies are also explored.', " + R.drawable.article9 + ")");
+
+        db.execSQL("INSERT INTO Article VALUES(NULL, 'Environmental Policies: Progress and Challenges in 2024', 'James Christiano', '22 May 2024', 'Environmental policies in 2024 have shown remarkable progress, including the adoption of stricter emission standards, expansion of renewable energy projects, and increased funding for conservation efforts. However, significant challenges remain, such as global coordination, resistance from certain industries, and the need for public engagement. This article reviews the milestones achieved this year and discusses the road ahead in tackling environmental challenges through collaboration and innovation.', " + R.drawable.article10 + ")");
+    }
+
+    public ArrayList<Article> getAllArticle(){
+        ArrayList<Article> articles = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM Article", null);
+
+        if(cursor.moveToFirst()){
+            do{
+                Article article = new Article();
+
+                article.setTitle(cursor.getString(cursor.getColumnIndexOrThrow("title")));
+                article.setAuthor(cursor.getString(cursor.getColumnIndexOrThrow("author")));
+                article.setDate(cursor.getString(cursor.getColumnIndexOrThrow("date")));
+                article.setContent(cursor.getString(cursor.getColumnIndexOrThrow("content")));
+                article.setImage(cursor.getInt(cursor.getColumnIndexOrThrow("image")));
+
+                articles.add(article);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return articles;
     }
 }

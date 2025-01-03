@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="349dp"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_marginVertical="5dp">
+    
+    <ImageView
+        android:id="@+id/articleImageRV"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:background="@drawable/blue_rounded_corners_3"
+        android:src="@drawable/milah_plastik"
+        android:clipToOutline="true"
+        android:scaleType="centerCrop"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="10dp"
+        android:layout_gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/titleTextRV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="judul"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/authorTextRV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="author - date"
+            android:textSize="12sp"/>
+
+    </LinearLayout>
+</LinearLayout>

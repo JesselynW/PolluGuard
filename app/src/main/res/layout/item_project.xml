@@ -14,6 +14,7 @@
         android:layout_marginTop="5dp"
         android:clipToOutline="true"
         android:scaleType="centerCrop"
+        android:background="@drawable/blue_rounded_corners_3"
         android:src="@drawable/milah_plastik"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -110,10 +111,10 @@
         android:gravity="center">
 
         <ImageView
-            android:layout_width="6dp"
+            android:layout_width="wrap_content"
             android:layout_height="6dp"
-            android:src="@drawable/vector"
-            android:layout_marginRight="2dp"/>
+            android:layout_marginRight="2dp"
+            android:src="@drawable/vector" />
 
         <TextView
             android:id="@+id/rewardText"

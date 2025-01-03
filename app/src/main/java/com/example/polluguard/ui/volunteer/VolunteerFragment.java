@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -79,6 +81,8 @@ public class VolunteerFragment extends Fragment implements ProjectOnClick {
         intent.putExtra("location", projects.get(position).getLocation());
         intent.putExtra("reward", projects.get(position).getReward());
         intent.putExtra("slot", projects.get(position).getSlot());
+        intent.putExtra("linkWhatsapp", projects.get(position).getLinkWA());
+        intent.putExtra("qr", projects.get(position).getQr());
 
         startActivity(intent);
     }
