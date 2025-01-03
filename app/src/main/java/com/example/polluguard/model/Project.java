@@ -3,6 +3,7 @@ package com.example.polluguard.model;
 import java.io.Serializable;
 
 public class Project implements Serializable {
+    private int projectId;
     private String projectName;
     private int imageProject;
     private String date;
@@ -14,6 +15,14 @@ public class Project implements Serializable {
     private String linkWhatsapp;
     private int whatsappQR;
     private Organizer organizer;
+
+    public int getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
+    }
 
     public int getImageProject() {
         return imageProject;

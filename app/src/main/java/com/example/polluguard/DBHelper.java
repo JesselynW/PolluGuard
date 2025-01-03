@@ -73,6 +73,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE User_volunteer_event(" +
                 "userId INTEGER," +
                 "eventId INTEGER," +
+                "rewardStatus INTEGER, " +
                 "FOREIGN KEY (eventId) REFERENCES Volunteer_event(eventId)," +
                 "FOREIGN KEY (userId) REFERENCES User(userId)," +
                 "PRIMARY KEY (userId, eventId));");
@@ -98,6 +99,7 @@ public class DBHelper extends SQLiteOpenHelper {
         addOrganizer(db);
         addEvent(db);
         addArticle(db);
+        addUserEvent(db);
     }
 
     @Override
@@ -141,9 +143,40 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put("name", user.getName());
         values.put("email", user.getEmail());
         values.put("password", user.getPassword());
+        values.put("volunteerPoints", 0);
         values.put("image", byteImage);
 
         long checkQuery = db.insert("User", null, values);
+        if(checkQuery == -1) return false;
+        else return true;
+
+
+    }
+
+    public boolean updateUser(User user, int id) {
+        Log.i("DB HELPER UPDATE", "CHECK PHONE NUMBER pertama sebelum update= " + user.getPhoneNumber());
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Bitmap image = user.getImage();
+        byteArrayOutputStream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byteImage = byteArrayOutputStream.toByteArray();
+
+        ContentValues values = new ContentValues();
+        values.put("name", user.getName());
+        values.put("email", user.getEmail());
+        if(!user.getPassword().equals("")) values.put("password", user.getPassword());
+        if(user.getPhoneNumber() != null){
+            Log.i("DB HELPER UDPATE", "MASUK KAH? KE DALAM IF NYA");
+            values.put("phoneNumber", user.getPhoneNumber());
+        }
+        if(user.getImage() != null) values.put("image", byteImage);
+
+
+        long checkQuery = db.update("User", values, "userId = ?", new String[]{String.valueOf(id)});
+        Log.i("DB HELPER UPDATE", "CHECK PHONE NUMBER= " + values.get("phoneNumber"));
+        Log.i("DB HELPER UPDATE", "CHECK PHONE NUMBER setelah update= " + user.getPhoneNumber());
+        Log.i("DB HELPER UPDATE", "CHECK QUERY = " + checkQuery);
         if(checkQuery == -1) return false;
         else return true;
 
@@ -162,6 +195,8 @@ public class DBHelper extends SQLiteOpenHelper {
         String name = "";
         String email = "";
         String password = "";
+        String phoneNumber = "";
+        int volunteerPoints = 0;
         Bitmap image = null;
 
         User user = null;
@@ -171,12 +206,13 @@ public class DBHelper extends SQLiteOpenHelper {
                 name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
                 email = cursor.getString(cursor.getColumnIndexOrThrow("email"));
                 password = cursor.getString(cursor.getColumnIndexOrThrow("password"));
-
+                volunteerPoints = cursor.getInt(cursor.getColumnIndexOrThrow("volunteerPoints"));
+                phoneNumber = cursor.getString(cursor.getColumnIndexOrThrow("phoneNumber"));
                 byte[] imageBlob = cursor.getBlob(cursor.getColumnIndexOrThrow("image"));
                 image = BitmapFactory.decodeByteArray(imageBlob, 0, imageBlob.length);
             }
 
-            user = new User(name, email, password, image);
+            user = new User(name, email, password, phoneNumber, volunteerPoints, image);
             cursor.close();
 
         } catch (Exception e) {
@@ -229,6 +265,28 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
+    public void addUserEvent(SQLiteDatabase db) {
+        db.execSQL("INSERT INTO User_volunteer_event VALUES(2, 1, 1)");
+
+        db.execSQL("INSERT INTO User_volunteer_event VALUES(2, 2, 1)");
+
+        db.execSQL("INSERT INTO User_volunteer_event VALUES(2, 3, 1)");
+
+        db.execSQL("INSERT INTO User_volunteer_event VALUES(2, 4, 0)");
+
+        db.execSQL("INSERT INTO User_volunteer_event VALUES(2, 5, 0)");
+
+        db.execSQL("INSERT INTO User_volunteer_event VALUES(2, 6, 0)");
+
+        db.execSQL("INSERT INTO User_volunteer_event VALUES(2, 7, 0)");
+
+        db.execSQL("INSERT INTO User_volunteer_event VALUES(2, 8, 1)");
+
+        db.execSQL("INSERT INTO User_volunteer_event VALUES(2, 9, 1)");
+
+        db.execSQL("INSERT INTO User_volunteer_event VALUES(2, 10, 1)");
+    }
+
     public void addUser(SQLiteDatabase db){
         String query = "INSERT INTO User VALUES(NULL, 'jeje', 'jeje@gmail.com', 'jeje123', '081234567890', 10, '29th july 2004', ?)";
 
@@ -268,6 +326,8 @@ public class DBHelper extends SQLiteOpenHelper {
                         cursor.getString(cursor.getColumnIndexOrThrow("organizerName")),
                         cursor.getInt(cursor.getColumnIndexOrThrow("organizerLogo")),
                         cursor.getString(cursor.getColumnIndexOrThrow("organizerDesc"))));
+
+//                Log.i("DB HELPERRRRRR", "ID EVENTTTT = " + cursor.getInt(cursor.getColumnIndexOrThrow("eventId")));
 
                 projects.add(project);
             } while (cursor.moveToNext());
@@ -367,14 +427,14 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO Article VALUES(NULL, 'Environmental Policies: Progress and Challenges in 2024', 'James Christiano', '22 May 2024', 'Environmental policies in 2024 have shown remarkable progress, including the adoption of stricter emission standards, expansion of renewable energy projects, and increased funding for conservation efforts. However, significant challenges remain, such as global coordination, resistance from certain industries, and the need for public engagement. This article reviews the milestones achieved this year and discusses the road ahead in tackling environmental challenges through collaboration and innovation.', " + R.drawable.article10 + ")");
     }
 
-    public ArrayList<Article> getAllArticle(){
+    public ArrayList<Article> getAllArticle() {
         ArrayList<Article> articles = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT * FROM Article", null);
 
-        if(cursor.moveToFirst()){
-            do{
+        if (cursor.moveToFirst()) {
+            do {
                 Article article = new Article();
 
                 article.setTitle(cursor.getString(cursor.getColumnIndexOrThrow("title")));
@@ -390,5 +450,190 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return articles;
+    }
+
+    public ArrayList<Project> getAllUserProject(int userId) {
+        ArrayList<Project> userProjects = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+
+        Cursor cursor = db.rawQuery(
+                "SELECT ve.eventId, rewardStatus, userId, ve.name, ve.image, ve.date, ve.location, ve.reward, o.logo AS organizerLogo FROM Volunteer_event AS ve JOIN User_volunteer_event AS uve ON ve.eventId = uve.eventId JOIN Organizer AS o ON o.organizerId = ve.organizerId WHERE userId = ? AND rewardStatus = 1", new String[]{String.valueOf(userId)});
+//        Cursor cursor = db.rawQuery("SELECT * FROM User_Volunteer_event", new String[]{});
+//        Log.i("DB HELPER", "Cursor = " + cursor);
+//        Log.i("DB HELPER",  "Project Name = " + cursor.getString(cursor.getColumnIndexOrThrow("name")));
+        try {
+            if(cursor.moveToFirst()) {
+                do{
+                    Project project = new Project();
+                    project.setProjectId(cursor.getInt(cursor.getColumnIndexOrThrow("eventId")));
+                    project.setProjectName(cursor.getString(cursor.getColumnIndexOrThrow("name")));
+                    project.setImageProject(cursor.getInt(cursor.getColumnIndexOrThrow("image")));
+                    project.setDate(cursor.getString(cursor.getColumnIndexOrThrow("date")));
+                    project.setLocation(cursor.getString(cursor.getColumnIndexOrThrow("location")));
+                    project.setReward(cursor.getInt(cursor.getColumnIndexOrThrow("reward")));
+                    project.setOrganizer(new Organizer(
+                            cursor.getInt(cursor.getColumnIndexOrThrow("organizerLogo"))));
+
+                    userProjects.add(project);
+
+//                    Log.i("DB HELPER",  "Project ID = " + cursor.getString(cursor.getColumnIndexOrThrow("name")));
+//                    Log.i("DB HELPER", "Project = " + project + " Project Name = " + project.getProjectName());
+                    Log.i("DB HELPER",  "Project ID = " + cursor.getInt(cursor.getColumnIndexOrThrow("eventId")));
+                    Log.i("DB HELPER", "User ID = " + cursor.getInt(cursor.getColumnIndexOrThrow("userId")));
+                    Log.i("DB HELPER", "Status Reward = " + cursor.getInt(cursor.getColumnIndexOrThrow("rewardStatus")));
+                }while(cursor.moveToNext());
+
+            }
+
+            cursor = db.rawQuery(
+                    "SELECT ve.eventId, rewardStatus, userId, ve.name, ve.image, ve.date, ve.location, ve.reward, o.logo AS organizerLogo FROM Volunteer_event AS ve JOIN User_volunteer_event AS uve ON ve.eventId = uve.eventId JOIN Organizer AS o ON o.organizerId = ve.organizerId WHERE userId = ? AND rewardStatus = 0", new String[]{String.valueOf(userId)});
+
+            if(cursor.moveToFirst()) {
+                do{
+                    Project project = new Project();
+                    project.setProjectName(cursor.getString(cursor.getColumnIndexOrThrow("name")));
+                    project.setImageProject(cursor.getInt(cursor.getColumnIndexOrThrow("image")));
+                    project.setDate(cursor.getString(cursor.getColumnIndexOrThrow("date")));
+                    project.setLocation(cursor.getString(cursor.getColumnIndexOrThrow("location")));
+                    project.setReward(cursor.getInt(cursor.getColumnIndexOrThrow("reward")));
+                    project.setOrganizer(new Organizer(
+                            cursor.getInt(cursor.getColumnIndexOrThrow("organizerLogo"))));
+
+                    userProjects.add(project);
+
+//                    Log.i("DB HELPER",  "Project ID = " + cursor.getString(cursor.getColumnIndexOrThrow("name")));
+//                    Log.i("DB HELPER", "Project = " + project + " Project Name = " + project.getProjectName());
+                    Log.i("DB HELPER",  "Project ID = " + cursor.getInt(cursor.getColumnIndexOrThrow("eventId")));
+                    Log.i("DB HELPER", "User ID = " + cursor.getInt(cursor.getColumnIndexOrThrow("userId")));
+                    Log.i("DB HELPER", "Status Reward = " + cursor.getInt(cursor.getColumnIndexOrThrow("rewardStatus")));
+                }while(cursor.moveToNext());
+
+            }
+
+            cursor.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        db.close();
+        return userProjects;
+    }
+
+    public ArrayList<Project> getFiveUserProject(int userId) {
+        ArrayList<Project> userProjects = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+
+        Cursor cursor = db.rawQuery(
+                "SELECT ve.eventId, userId, rewardStatus, ve.name, ve.image, ve.date, ve.location, ve.reward, o.logo AS organizerLogo FROM Volunteer_event AS ve JOIN User_volunteer_event AS uve ON ve.eventId = uve.eventId JOIN Organizer AS o ON o.organizerId = ve.organizerId WHERE userId = ? ORDER BY rewardStatus DESC LIMIT 5", new String[]{String.valueOf(userId)});
+//        Cursor cursor = db.rawQuery("SELECT * FROM User_Volunteer_event", new String[]{});
+//        Log.i("DB HELPER", "Cursor = " + cursor);
+//        Log.i("DB HELPER",  "Project Name = " + cursor.getString(cursor.getColumnIndexOrThrow("name")));
+        try {
+            if(cursor.moveToFirst()) {
+                do{
+                    Project project = new Project();
+                    project.setProjectId(cursor.getInt(cursor.getColumnIndexOrThrow("eventId")));
+                    project.setProjectName(cursor.getString(cursor.getColumnIndexOrThrow("name")));
+                    project.setImageProject(cursor.getInt(cursor.getColumnIndexOrThrow("image")));
+                    project.setDate(cursor.getString(cursor.getColumnIndexOrThrow("date")));
+                    project.setLocation(cursor.getString(cursor.getColumnIndexOrThrow("location")));
+                    project.setReward(cursor.getInt(cursor.getColumnIndexOrThrow("reward")));
+                    project.setOrganizer(new Organizer(
+                            cursor.getInt(cursor.getColumnIndexOrThrow("organizerLogo"))));
+
+                    userProjects.add(project);
+
+//                    Log.i("DB HELPER",  "Project ID = " + cursor.getString(cursor.getColumnIndexOrThrow("name")));
+//                    Log.i("DB HELPER", "Project = " + project + " Project Name = " + project.getProjectName());
+                    Log.i("DB HELPER",  "Project ID = " + cursor.getInt(cursor.getColumnIndexOrThrow("eventId")));
+                    Log.i("DB HELPER", "User ID = " + cursor.getInt(cursor.getColumnIndexOrThrow("userId")));
+                    Log.i("DB HELPER", "Status Reward = " + cursor.getInt(cursor.getColumnIndexOrThrow("rewardStatus")));
+                }while(cursor.moveToNext());
+
+            }
+
+            cursor.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        db.close();
+        return userProjects;
+    }
+
+    public boolean getUserProjectRewardStatus(int userId, int eventId){
+
+        Log.i("DB HELPER = ", " User ID = " + userId + "Event ID = " + eventId);
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT rewardStatus FROM User_volunteer_event WHERE userId = ? AND eventId = ?", new String[]{String.valueOf(userId), String.valueOf(eventId)});
+
+        boolean rewardStatus = false;
+        if(cursor.moveToFirst()){
+            if(cursor.getInt(cursor.getColumnIndexOrThrow("rewardStatus")) == 1){
+                rewardStatus = true;
+                Log.i("DB HELPER", " REWARD STATUS ? = " + rewardStatus + "cursor ? = " + cursor.getInt(cursor.getColumnIndexOrThrow("rewardStatus")) );
+            }
+        }
+        cursor.close();
+        db.close();
+        return rewardStatus;
+    }
+
+    public void updateUserProjectStatus(int userId, int eventId){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query = "UPDATE User_volunteer_event SET rewardStatus = 0 WHERE userId = ? AND eventId = ?";
+        db.execSQL(query, new String[]{String.valueOf(userId), String.valueOf(eventId)});
+        db.close();
+    }
+
+    public void updateUserPoint(int userId, int point){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query = "UPDATE User SET volunteerPoints = volunteerPoints + ? WHERE userId = ?";
+        db.execSQL(query, new Object[]{point, String.valueOf(userId)});
+        db.close();
+    }
+
+    public boolean validatePassword(String currentPassword, String oldPassword){
+        if(!currentPassword.equals(oldPassword)) return false;
+        else return true;
+    }
+
+    public void validateProfile(Context context, int id, String name, String email, String oldPw, String newPw, String phoneNumber, Bitmap bitmap) {
+        User user = getUserById(id);
+        if(name.equals("")){
+            Toast.makeText(context, "Please fill your name", Toast.LENGTH_SHORT).show();
+        }
+        else if(email.equals("")){
+            Toast.makeText(context, "Please fill your email", Toast.LENGTH_SHORT).show();
+        }
+        else if(oldPw.equals("") && !newPw.equals("")){
+            Toast.makeText(context, "Please fill your old password to change it", Toast.LENGTH_SHORT).show();
+        }
+        else if(!oldPw.equals("") && newPw.equals("")){
+            Toast.makeText(context, "Please fill your new password to change it", Toast.LENGTH_SHORT).show();
+        }
+        else if(!oldPw.equals("") && !newPw.equals("") && !validatePassword(user.getPassword(), oldPw)){
+            Toast.makeText(context, "Your old password is incorrect", Toast.LENGTH_SHORT).show();
+        }
+        else if(!phoneNumber.equals("") && phoneNumber.length() < 10 || phoneNumber.length() > 12){
+            Toast.makeText(context, "Phone number length must be between 10-12 digits", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            user.setName(name);
+            user.setEmail(email);
+            if(!oldPw.equals("") && !newPw.equals("")) user.setPassword(newPw);
+            if(!phoneNumber.equals("")) user.setPhoneNumber(phoneNumber);
+            Log.i("DI DALAM DB HELPER = ", "USER PHONE NUMBER? = " + user.getPhoneNumber());
+            if(bitmap != null) user.setImage(bitmap);
+            updateUser(user, id);
+            Toast.makeText(context, "Successfully change profile!", Toast.LENGTH_SHORT).show();
+
+        }
     }
 }

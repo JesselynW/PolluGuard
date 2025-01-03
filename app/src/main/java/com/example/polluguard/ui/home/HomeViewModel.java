@@ -41,15 +41,15 @@ public class HomeViewModel extends ViewModel {
 //        userData.setValue(user);
 //        return userData;
         int id = sp.getInt("user_id", -1);
-        Log.d("HomeViewModel", "user_id: " + id); // Cek apakah ID yang diambil benar
+        Log.d("HomeViewModel", "user_id: " + id);
         if (id != -1) {
             User user = db.getUserById(id);
             if (user != null) {
-                userData.setValue(user); // Update LiveData
-                Log.d("HomeViewModel", "User found: " + user.getName()); // Cek apakah user ditemukan
+                userData.setValue(user);
+                Log.d("HomeViewModel", "User found: " + user.getName());
             } else {
                 Log.d("HomeViewModel", "User not found");
-                userData.setValue(null); // Handle if user is not found
+                userData.setValue(null);
             }
         } else {
             Log.d("HomeViewModel", "No user_id found in SharedPreferences");
