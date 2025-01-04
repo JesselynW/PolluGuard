@@ -1,6 +1,8 @@
 package com.example.polluguard.adapter;
 
 import android.content.Context;
+import android.location.Location;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.polluguard.DBHelper;
 import com.example.polluguard.R;
 import com.example.polluguard.model.Project;
 import com.example.polluguard.recyclerView.ProjectOnClick;
@@ -22,12 +25,17 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
     private final ProjectOnClick projectClick;
     private Context context;
     private List<Project> projects;
+    private double userLatitude;
+    private double userLongitude;
     Random rand = new Random();
 
-    public ProjectAdapter(Context context, List<Project> projects, ProjectOnClick projectClick) {
+    public ProjectAdapter(Context context, List<Project> projects, ProjectOnClick projectClick, double userLatitude, double userLongitude) {
         this.context = context;
         this.projects = projects;
         this.projectClick = projectClick;
+        this.userLatitude = userLatitude;
+        this.userLongitude = userLongitude;
+        Log.i("current location in project adapter", userLatitude + " " + userLongitude);
     }
 
     @NonNull
@@ -40,8 +48,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
     @Override
     public void onBindViewHolder(@NonNull ProjectAdapter.ProjectViewHolder holder, int position) {
         Project project = projects.get(position);
-        //harus berdasarkan lokasi saat ini
-        int dist = rand.nextInt(50)+1;
+        DBHelper dbHelper = new DBHelper(context);
 
         holder.name.setText(project.getProjectName());
         holder.location.setText(project.getLocation());
@@ -51,8 +58,19 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
         holder.month.setText(project.getDate().substring(5, 8).toUpperCase());
         holder.reward.setText(project.getReward() + "");
         holder.price.setText("FREE");
-        holder.slot.setText(project.getSlot() + " slots left");
-        holder.distance.setText(dist + " km");
+        holder.slot.setText(dbHelper.countSlotbyEventId(project) + " slots left");
+
+        Location userLocation = new Location("");  // Lokasi pengguna
+        userLocation.setLatitude(userLatitude);
+        userLocation.setLongitude(userLongitude);
+
+        Location targetLocation = new Location("");
+        targetLocation.setLatitude(project.getLatitude());
+        targetLocation.setLongitude(project.getLongtitude());
+        float distanceInMeters = userLocation.distanceTo(targetLocation);
+        float distanceInKilometers = distanceInMeters / 1000;
+
+        holder.distance.setText(String.format("%.2f km", distanceInKilometers));
     }
 
     @Override

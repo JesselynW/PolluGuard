@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -18,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.polluguard.DBHelper;
 import com.example.polluguard.R;
 import com.example.polluguard.adapter.ArticleAdapter;
-import com.example.polluguard.adapter.PreviewProjectAdapter;
 import com.example.polluguard.databinding.FragmentDiscoverBinding;
 import com.example.polluguard.model.Article;
 import com.example.polluguard.recyclerView.ProjectOnClick;

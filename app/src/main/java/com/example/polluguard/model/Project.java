@@ -9,6 +9,8 @@ public class Project implements Serializable {
     private String date;
     private String time;
     private String location;
+    private double latitude;
+    private double longtitude;
     private String about;
     private int reward;
     private int slot;
@@ -62,6 +64,22 @@ public class Project implements Serializable {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongtitude() {
+        return longtitude;
+    }
+
+    public void setLongtitude(double longtitude) {
+        this.longtitude = longtitude;
     }
 
     public String getAbout() {

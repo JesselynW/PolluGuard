@@ -95,20 +95,21 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="120dp"
         android:layout_marginTop="120dp"
+        android:layout_marginEnd="120dp"
+        android:background="@drawable/rounded_corners"
+        android:backgroundTint="@color/yellowCoupon"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="7dp"
+        android:paddingVertical="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="horizontal"
-        android:background="@drawable/rounded_corners"
-        android:backgroundTint="@color/yellowCoupon"
-        android:paddingVertical="3dp"
-        android:paddingHorizontal="7dp"
-        android:gravity="center">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -121,66 +122,70 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="20"
-            android:textSize="6sp"
-            android:textColor="@color/yellowText"/>
+            android:textColor="@color/yellowText"
+            android:textSize="6sp" />
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="60dp"
         android:layout_marginTop="120dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="horizontal"
+        android:layout_marginEnd="60dp"
         android:background="@drawable/rounded_corners"
         android:backgroundTint="@color/greenCoupon"
-        android:paddingVertical="3dp"
+        android:gravity="center"
+        android:orientation="horizontal"
         android:paddingHorizontal="7dp"
-        android:gravity="center">
+        android:paddingVertical="3dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.148"
+        app:layout_constraintStart_toEndOf="@+id/linearLayout7"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.494">
 
         <TextView
             android:id="@+id/priceText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="$5"
-            android:textSize="6sp"
-            android:textColor="@color/greenText"/>
+            android:textColor="@color/greenText"
+            android:textSize="6sp" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
         android:layout_marginTop="120dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="horizontal"
         android:background="@drawable/rounded_corners"
         android:backgroundTint="@color/redCoupon"
-        android:paddingVertical="3dp"
+        android:gravity="center"
+        android:orientation="horizontal"
         android:paddingHorizontal="7dp"
-        android:gravity="center">
+        android:paddingVertical="3dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.151"
+        app:layout_constraintStart_toEndOf="@+id/linearLayout6"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.494">
 
         <ImageView
             android:layout_width="6dp"
             android:layout_height="6dp"
-            android:src="@drawable/vector__1_"
-            android:layout_marginRight="2dp"/>
+            android:layout_marginRight="2dp"
+            android:src="@drawable/vector__1_" />
 
         <TextView
             android:id="@+id/distanceText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="3,4 km"
-            android:textSize="6sp"
-            android:textColor="@color/redText"/>
+            android:textColor="@color/redText"
+            android:textSize="6sp" />
 
     </LinearLayout>
 

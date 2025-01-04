@@ -3,8 +3,11 @@ package com.example.polluguard.ui;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -15,12 +18,14 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.polluguard.DBHelper;
 import com.example.polluguard.R;
+import com.example.polluguard.model.Project;
 
 public class ProjectDetails extends AppCompatActivity {
 
-    TextView dateTimeTV, organizerTV, descTV, aboutTV, locationTV, rewardTV, slotTV, nameTV;
+    TextView dateTimeTV, organizerTV, descTV, aboutTV, locationTV, rewardTV, slotTV, nameTV, text, percentage;
     ImageView projectImage, logo;
     Button participateButton;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,7 @@ public class ProjectDetails extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
+        DBHelper db = new DBHelper(this);
 
         String dateTime = intent.getStringExtra("date") + ", " + intent.getStringExtra("time");
         int project = intent.getIntExtra("image", 0);
@@ -43,8 +49,10 @@ public class ProjectDetails extends AppCompatActivity {
         String about = intent.getStringExtra("desc");
         String location = intent.getStringExtra("location");
         String reward = intent.getIntExtra("reward", 0) + " Volunteer Points";
-        String slot = intent.getIntExtra("slot", 0) + " left";
+        String slot = intent.getIntExtra("slotLeft", 0) + " left";
         String name = intent.getStringExtra("projectName");
+        String link = intent.getStringExtra("linkWhatsapp");
+        int qr = intent.getIntExtra("qr", 0);
 
         dateTimeTV = findViewById(R.id.dateTimeText);
         organizerTV = findViewById(R.id.organizerName);
@@ -56,6 +64,13 @@ public class ProjectDetails extends AppCompatActivity {
         projectImage = findViewById(R.id.projectImage);
         logo = findViewById(R.id.logoImage);
         nameTV = findViewById(R.id.judulText);
+        progressBar = findViewById(R.id.progressBar);
+        percentage = findViewById(R.id.slotPercentageText);
+
+        double slotPercentage = 1 - ((double)intent.getIntExtra("slotLeft", 0)/(double)intent.getIntExtra("slot", 0));
+        slotPercentage *= 100;
+
+        Log.i("persen slotnya", " " + slotPercentage + intent.getIntExtra("slotLeft", 0) + intent.getIntExtra("slot", 0));
 
         dateTimeTV.setText(dateTime);
         projectImage.setImageResource(project);
@@ -65,27 +80,45 @@ public class ProjectDetails extends AppCompatActivity {
         aboutTV.setText(about);
         locationTV.setText(location);
         rewardTV.setText(reward);
+        progressBar.setProgress((int) slotPercentage);
+        percentage.setText((int) slotPercentage + "%");
+//        int slotLeft = db.countSlotbyEventId((Project) intent.getSerializableExtra("project"));
+
+//        Log.i("slot left", "slot left: " + slotLeft);
         slotTV.setText(slot);
         nameTV.setText(name);
 
         SharedPreferences sp = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         int userId = sp.getInt("user_id", 0);
 
-        DBHelper db = new DBHelper(this);
         participateButton = findViewById(R.id.participateButton);
+        text = findViewById(R.id.alreadyRegisteredText);
+        Log.d("ProjectDetails", "participateButton is " + (participateButton == null ? "null" : "not null"));
 
-        participateButton.setOnClickListener(e -> {
-            db.insertUserVolunteerEvent(userId, name);
 
-            String link = intent.getStringExtra("linkWhatsapp");
-            int qr = intent.getIntExtra("qr", 0);
 
-            Intent it = new Intent(ProjectDetails.this, EventRegistrationActivity.class);
-            it.putExtra("link", link);
-            it.putExtra("qr", qr);
+        if(db.checkUserVolunteered(userId, name)){
+            participateButton.setVisibility(View.VISIBLE);
+            participateButton.setOnClickListener(e -> {
+                db.insertUserVolunteerEvent(userId, name);
 
-            startActivity(it);
-        });
+                Intent it = new Intent(ProjectDetails.this, EventRegistrationActivity.class);
+                it.putExtra("link", link);
+                it.putExtra("qrWA", qr);
+
+                startActivity(it);
+            });
+
+            text.setVisibility(View.GONE);
+        } else if (slotPercentage == 100) {
+            participateButton.setVisibility(View.GONE);
+            text.setVisibility(View.GONE);
+            text.setText("Already full");
+        } else{
+            participateButton.setVisibility(View.GONE);
+            text.setVisibility(View.VISIBLE);
+        }
+
 
     }
 }

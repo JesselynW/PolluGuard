@@ -61,6 +61,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 "date TEXT," +
                 "time TEXT," +
                 "location TEXT," +
+                "latitude REAL," +
+                "longtitude REAL," +
                 "about TEXT," +
                 "reward INTEGER," +
                 "slot INTEGER," +
@@ -90,6 +92,7 @@ public class DBHelper extends SQLiteOpenHelper {
         //table article comment
         db.execSQL("CREATE TABLE Article_comment(" +
                 "commentId INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "date TEXT," +
                 "articleId INTEGER," +
                 "userId INTEGER," +
                 "FOREIGN KEY (articleId) REFERENCES Article(articleId)," +
@@ -234,34 +237,34 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public void addEvent(SQLiteDatabase db){
         db.execSQL
-                ("INSERT INTO Volunteer_event VALUES(NULL, 'Garbage Collection Drive', " + R.drawable.milah_sampah + ", '15th February 2024', '09.00-13.00', 'Jl. Jalur Sutera Bar. No.Kav. 21, Kota Tangerang, Banten', 'A volunteer-driven garbage collection event to clean up public roads. ', 20, 15, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 1)");
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'Garbage Collection Drive', " + R.drawable.milah_sampah + ", '15th February 2024', '09.00-13.00', 'Jl. Jalur Sutera Bar. No.Kav. 21, Kota Tangerang, Banten', -6.2233205414601045, 106.64865777307338, 'A volunteer-driven garbage collection event to clean up public roads. ', 20, 15, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 1)");
 
         db.execSQL
-                ("INSERT INTO Volunteer_event VALUES(NULL, 'Plastic Waste Awareness', " + R.drawable.milah_plastik + ", '10th March 2024', '08.30-12.30', 'Kebayoran Baru, Jakarta', 'An act to raise awareness about plastic waste and recycling methods. ', 15, 30, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 2)");
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'Plastic Waste Awareness', " + R.drawable.milah_plastik + ", '10th March 2024', '08.30-12.30', 'Kebayoran Baru, Jakarta', -6.240337141573144, 106.79101682260671, 'An act to raise awareness about plastic waste and recycling methods. ', 15, 30, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 2)");
 
         db.execSQL
-                ("INSERT INTO Volunteer_event VALUES(NULL, 'Tree Planting Initiative', " + R.drawable.tanam_pohon + ", '20th April 2024', '07.00-10.00', 'Jl. Imam Bonjol No.12, Jakarta', 'An initiative to plant trees in urban areas to improve air quality. ', 25, 30, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 1)");
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'Tree Planting Initiative', " + R.drawable.tanam_pohon + ", '20th April 2024', '07.00-10.00', 'Jl. Imam Bonjol No.12, Jakarta', -6.199260963465484, 106.82997541449694, 'An initiative to plant trees in urban areas to improve air quality. ', 25, 30, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 1)");
 
         db.execSQL
-                ("INSERT INTO Volunteer_event VALUES(NULL, 'Sorting Plastics', " + R.drawable.milah_sampah_3 + ", '19th May 2024', '08.00-12.00', 'Jl. SetiaBudi No.19, Jakarta', 'A community effort to clean and sort public parks garbage.', 10, 25, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 3)");
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'Sorting Plastics', " + R.drawable.milah_sampah_3 + ", '19th May 2024', '08.00-12.00', 'Jl. SetiaBudi No.19, Jakarta', -6.211345539006613, 106.82923894144493, 'A community effort to clean and sort public parks garbage.', 10, 25, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 3)");
 
         db.execSQL
-                ("INSERT INTO Volunteer_event VALUES(NULL, 'Beach Cleanup', " + R.drawable.milah_sampah_di_pinggir_pantai + ", '17th June 2024', '06.00-10.00', 'Kuta Beach, Bali', 'A beach cleanup event to remove plastic and other pollutants.', 10, 45, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 4)");
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'Beach Cleanup', " + R.drawable.milah_sampah_di_pinggir_pantai + ", '17th June 2024', '06.00-10.00', 'Kuta Beach, Bali', -8.71693283840178, 115.1685284539166, 'A beach cleanup event to remove plastic and other pollutants.', 10, 45, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 4)");
 
         db.execSQL
-                ("INSERT INTO Volunteer_event VALUES(NULL, 'Reforestation', " + R.drawable.tanam_pohon2 + ", '04th July 2024', '07.00-10.00', 'Taman Nasional Gunung Gede, Bogor', 'Reforestation activities in national parks to restore green cover. ', 30, 45, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 4)");
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'Reforestation', " + R.drawable.tanam_pohon2 + ", '04th July 2024', '07.00-10.00', 'Taman Nasional Gunung Gede, Bogor', -6.737147474909148, 107.00524332580257, 'Reforestation activities in national parks to restore green cover. ', 30, 45, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 4)");
 
         db.execSQL
-                ("INSERT INTO Volunteer_event VALUES(NULL, 'Community Reforestation', " + R.drawable.tanam_pohon3 + ", '11th July 2024', '08.00-12.00', 'Taman Nasional Gunung Gede, Bogor', 'Reforestation activities in national parks to restore green cover. ', 20, 15, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 1)");
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'Community Reforestation', " + R.drawable.tanam_pohon3 + ", '11th July 2024', '08.00-12.00', 'Taman Nasional Gunung Gede, Bogor', -6.737147474909148, 107.00524332580257, 'Reforestation activities in national parks to restore green cover. ', 20, 15, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 1)");
 
         db.execSQL
-                ("INSERT INTO Volunteer_event VALUES(NULL, 'Urban Green Project', " + R.drawable.tanam_pohon4 + ", '27th August 2024', '08.00-12.00', 'Jl. Sudirman, Jakarta', 'An urban greening initiative to transform unused spaces into green, sustainable areas.', 20, 30, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 2)");
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'Urban Green Project', " + R.drawable.tanam_pohon4 + ", '27th August 2024', '08.00-12.00', 'Jl. Sudirman, Jakarta', -6.219101610543824, 106.8140045986133, 'An urban greening initiative to transform unused spaces into green, sustainable areas.', 20, 30, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 2)");
 
         db.execSQL
-                ("INSERT INTO Volunteer_event VALUES(NULL, 'Clean Breeze', " + R.drawable.milah_sampah_4 + ", '14th August 2024', '08.00-12.00', 'Jl. Sudirman, Jakarta', 'A massive city-wide campaign to clean streets and public spaces.', 10, 30, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 4)");
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'Clean Breeze', " + R.drawable.milah_sampah_4 + ", '14th August 2024', '08.00-12.00', 'Jl. Sudirman, Jakarta', -6.219101610543824, 106.8140045986133, 'A massive city-wide campaign to clean streets and public spaces.', 10, 30, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 4)");
 
         db.execSQL
-                ("INSERT INTO Volunteer_event VALUES(NULL, 'SkySavers', " + R.drawable.tanam_pohon5 + ", '21th October 2024', '08.00-12.00', 'Setiabudi, Jakarta', 'A volunteer-driven garbage collection event to clean up public parks.', 25, 30, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 1)");
+                ("INSERT INTO Volunteer_event VALUES(NULL, 'SkySavers', " + R.drawable.tanam_pohon5 + ", '21th October 2024', '08.00-12.00', 'Jl.Sudirman, Jakarta', -6.219101610543824, 106.8140045986133, 'A volunteer-driven garbage collection event to clean up public parks.', 25, 30, 'https://web.whatsapp.com/', " + R.drawable.qr_dummy + ", 1)");
 
     }
 
@@ -302,8 +305,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<Project> projects = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT ve.name, ve.image, ve.date, ve.time, ve.location, ve.about, " +
-                        "ve.reward, ve.slot, ve.linkWhatsapp, ve.whatsappQR, o.name AS organizerName, o.logo AS organizerLogo, o.description AS organizerDesc " +
+        String query = "SELECT ve.name, ve.image, ve.date, ve.time, ve.location, ve.latitude, ve.longtitude, ve.about, ve.reward, ve.slot, ve.linkWhatsapp, ve.whatsappQR, o.name AS organizerName, o.logo AS organizerLogo, o.description AS organizerDesc " +
                         "FROM Volunteer_event AS ve " +
                         "INNER JOIN Organizer AS o ON ve.organizerId = o.organizerId";
         Cursor cursor = db.rawQuery(query, null);
@@ -317,6 +319,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 project.setDate(cursor.getString(cursor.getColumnIndexOrThrow("date")));
                 project.setTime(cursor.getString(cursor.getColumnIndexOrThrow("time")));
                 project.setLocation(cursor.getString(cursor.getColumnIndexOrThrow("location")));
+                project.setLatitude(cursor.getDouble(cursor.getColumnIndexOrThrow("latitude")));
+                project.setLongtitude(cursor.getDouble(cursor.getColumnIndexOrThrow("longtitude")));
                 project.setAbout(cursor.getString(cursor.getColumnIndexOrThrow("about")));
                 project.setReward(cursor.getInt(cursor.getColumnIndexOrThrow("reward")));
                 project.setSlot(cursor.getInt(cursor.getColumnIndexOrThrow("slot")));
@@ -342,8 +346,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<Project> projects = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT ve.name, ve.image, ve.date, ve.time, ve.location, ve.about, " +
-                "ve.reward, ve.slot, o.name AS organizerName, o.logo AS organizerLogo, o.description AS organizerDesc " +
+        String query = "SELECT ve.name, ve.image, ve.date, ve.time, ve.location, ve.latitude, ve.longtitude, ve.about, ve.reward, ve.slot, o.name AS organizerName, o.logo AS organizerLogo, o.description AS organizerDesc " +
                 "FROM Volunteer_event AS ve " +
                 "INNER JOIN Organizer AS o ON ve.organizerId = o.organizerId " +
                 "ORDER BY ve.eventId LIMIT 3";
@@ -358,6 +361,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 project.setDate(cursor.getString(cursor.getColumnIndexOrThrow("date")));
                 project.setTime(cursor.getString(cursor.getColumnIndexOrThrow("time")));
                 project.setLocation(cursor.getString(cursor.getColumnIndexOrThrow("location")));
+                project.setLatitude(cursor.getDouble(cursor.getColumnIndexOrThrow("latitude")));
+                project.setLongtitude(cursor.getDouble(cursor.getColumnIndexOrThrow("longtitude")));
                 project.setAbout(cursor.getString(cursor.getColumnIndexOrThrow("about")));
                 project.setReward(cursor.getInt(cursor.getColumnIndexOrThrow("reward")));
                 project.setSlot(cursor.getInt(cursor.getColumnIndexOrThrow("slot")));
@@ -381,11 +386,10 @@ public class DBHelper extends SQLiteOpenHelper {
         String query = "SELECT eventId FROM Volunteer_Event WHERE name = ?";
         Cursor cursor = db.rawQuery(query, new String[]{eventName});
 
-        String query2 = "SELECT * FROM User_volunteer_event WHERE userId = ? AND eventId = ?";
-
         if(cursor.moveToFirst()){
             int eventId = cursor.getInt(cursor.getColumnIndexOrThrow("eventId"));
 
+            String query2 = "SELECT 1 FROM User_volunteer_event WHERE userId = ? AND eventId = ?";
             Cursor cursor1 = db.rawQuery(query2, new String[]{String.valueOf(userId), String.valueOf(eventId)});
 
             if(!cursor1.moveToFirst()){
@@ -396,6 +400,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 db.insert("User_volunteer_event", null, contentValues);
 
                 Log.i("db insert", "successfully inserted data");
+            }
+            else {
+                Log.i("db insert", "Data already exists for userId: " + userId + " and eventId: " + eventId);
             }
 
             cursor1.close();
@@ -635,5 +642,38 @@ public class DBHelper extends SQLiteOpenHelper {
             Toast.makeText(context, "Successfully change profile!", Toast.LENGTH_SHORT).show();
 
         }
+    }
+
+    public int countSlotbyEventId(Project project){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT ve.slot - COUNT(u.eventId) AS availableSlot FROM User_volunteer_event u " +
+                "LEFT JOIN Volunteer_event ve ON ve.eventId = u.eventId " +
+                "WHERE ve.name = ? GROUP BY(u.eventId)", new String[]{project.getProjectName()});
+
+        int slot = project.getSlot();
+
+        if(cursor.moveToFirst()){
+            slot = cursor.getInt(cursor.getColumnIndexOrThrow("availableSlot"));
+        }
+
+        db.close();
+        cursor.close();
+        return slot;
+    }
+
+    public boolean checkUserVolunteered(int userId, String eventName){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT u.userId FROM User_volunteer_event u JOIN Volunteer_event ve ON ve.eventId = u.eventId WHERE ve.name = ? AND u.userId = ?", new String[]{eventName, String.valueOf(userId)});
+
+        if(cursor.moveToFirst()){
+            cursor.close();
+            db.close();
+            return false;
+        }
+
+        cursor.close();
+        db.close();
+        return true;
     }
 }
