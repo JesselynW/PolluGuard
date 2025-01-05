@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class ArticleDetails extends AppCompatActivity {
 
     TextView title, author, content;
-    ImageView image;
+    ImageView image, backButton;
     CommentAdapter commentAdapter;
     RecyclerView commentRV;
     ArrayList<Comment> comments;
@@ -64,6 +64,11 @@ public class ArticleDetails extends AppCompatActivity {
         commentET = findViewById(R.id.commentEditText);
         post = findViewById(R.id.postButton);
         int articleId = dbHelper.getArticleId(intent.getStringExtra("title"), intent.getStringExtra("date"));
+
+        backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> {
+            onBackPressed();
+        });
 
         post.setOnClickListener(e -> {
             dbHelper.insertArticleComment(commentET.getText().toString(), sp.getInt("user_id", 0), articleId);

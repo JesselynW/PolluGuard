@@ -57,6 +57,18 @@ public class DiscoverFragment extends Fragment implements ProjectOnClick {
         author.setText(articles.get(0).getAuthor() + " - " + articles.get(0).getDate());
         image.setImageResource(articles.get(0).getImage());
 
+        title.setOnClickListener(e->{
+            Intent intent = new Intent(getContext(), ArticleDetails.class);
+
+            intent.putExtra("title", articles.get(0).getTitle());
+            intent.putExtra("author", articles.get(0).getAuthor());
+            intent.putExtra("date", articles.get(0).getDate());
+            intent.putExtra("content", articles.get(0).getContent());
+            intent.putExtra("image", articles.get(0).getImage());
+
+            startActivity(intent);
+        });
+
         return root;
     }
 

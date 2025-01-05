@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -71,13 +72,15 @@ public class LoginActivity extends AppCompatActivity {
 
                     int userId = cursor.getInt(cursor.getColumnIndexOrThrow("userId"));
 
+                    Log.i("user data", "id: " + userId);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putInt("user_id", userId);
+
                     if (cb.isChecked()) {
-                        SharedPreferences.Editor editor = sp.edit();
-                        editor.putInt("user_id", userId);       // Save user ID
-                        editor.putBoolean("isLoggedIn", true); // Mark user as logged in
-                        editor.apply();
+                        editor.putBoolean("isLoggedIn", true);
                     }
 
+                    editor.apply();
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
 

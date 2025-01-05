@@ -1,5 +1,6 @@
 package com.example.polluguard;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
@@ -38,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
 //        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_home);
 //
 //        NavigationUI.setupWithNavController(binding.navView, navController);
+
+        Intent intent = getIntent();
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view);
 
         // Find the NavController
@@ -46,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
 
         // Link BottomNavigationView with NavController
 //        NavigationUI.setupWithNavController(bottomNavigationView, navController);
+        if(intent.getBooleanExtra("toProfile", false))
+            navController.navigate(R.id.navigation_profile);
+
+        Log.i("event registration activity", "" + intent.getBooleanExtra("toProfile", false));
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             Log.d("Navigation", "Navigated to: " + destination.getId());

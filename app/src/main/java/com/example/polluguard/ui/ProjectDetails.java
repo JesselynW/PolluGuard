@@ -25,6 +25,7 @@ public class ProjectDetails extends AppCompatActivity {
     TextView dateTimeTV, organizerTV, descTV, aboutTV, locationTV, rewardTV, slotTV, nameTV, text, percentage;
     ImageView projectImage, logo;
     Button participateButton;
+    ImageView backButton;
     ProgressBar progressBar;
 
     @Override
@@ -66,6 +67,7 @@ public class ProjectDetails extends AppCompatActivity {
         nameTV = findViewById(R.id.judulText);
         progressBar = findViewById(R.id.progressBar);
         percentage = findViewById(R.id.slotPercentageText);
+        backButton = findViewById(R.id.backButton);
 
         double slotPercentage = 1 - ((double)intent.getIntExtra("slotLeft", 0)/(double)intent.getIntExtra("slot", 0));
         slotPercentage *= 100;
@@ -88,14 +90,17 @@ public class ProjectDetails extends AppCompatActivity {
         slotTV.setText(slot);
         nameTV.setText(name);
 
-        SharedPreferences sp = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-        int userId = sp.getInt("user_id", 0);
+        SharedPreferences sp = getSharedPreferences("UserData", MODE_PRIVATE);
+        int userId = sp.getInt("user_id", -1);
 
         participateButton = findViewById(R.id.participateButton);
         text = findViewById(R.id.alreadyRegisteredText);
         Log.d("ProjectDetails", "participateButton is " + (participateButton == null ? "null" : "not null"));
 
 
+        backButton.setOnClickListener(v -> {
+            onBackPressed();
+        });
 
         if(db.checkUserVolunteered(userId, name)){
             participateButton.setVisibility(View.VISIBLE);
@@ -120,5 +125,44 @@ public class ProjectDetails extends AppCompatActivity {
         }
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        DBHelper db = new DBHelper(this);
+        SharedPreferences sp = getSharedPreferences("UserData", MODE_PRIVATE);
+        int userId = sp.getInt("user_id", -1);
+        Intent intent = getIntent();
+
+        String name = intent.getStringExtra("projectName");
+        String link = intent.getStringExtra("linkWhatsapp");
+        int qr = intent.getIntExtra("qr", 0);
+
+        double slotPercentage = 1 - ((double)intent.getIntExtra("slotLeft", 0)/(double)intent.getIntExtra("slot", 0));
+        slotPercentage *= 100;
+
+        if(db.checkUserVolunteered(userId, name)){
+            participateButton.setVisibility(View.VISIBLE);
+            participateButton.setOnClickListener(e -> {
+                db.insertUserVolunteerEvent(userId, getIntent().getStringExtra("projectName"));
+
+                Intent it = new Intent(ProjectDetails.this, EventRegistrationActivity.class);
+                it.putExtra("link", link);
+                it.putExtra("qrWA", qr);
+
+                startActivity(it);
+            });
+
+            text.setVisibility(View.GONE);
+        } else if (slotPercentage == 100) {
+            participateButton.setVisibility(View.GONE);
+            text.setVisibility(View.GONE);
+            text.setText("Already full");
+        } else{
+            participateButton.setVisibility(View.GONE);
+            text.setVisibility(View.VISIBLE);
+        }
     }
 }

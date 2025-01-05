@@ -16,15 +16,31 @@
             android:background="@drawable/blue_background"
             android:layout_margin="-100dp">
 
-            <ImageView
-                android:id="@+id/articleImage"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="350dp"
-                android:clipToOutline="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/milah_plastik"
-                android:background="@drawable/blue_background"
-                android:backgroundTint="@color/blue"/>
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/backButton"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/arrow_left"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginLeft="30dp"
+                    android:translationZ="2dp"/>
+
+                <ImageView
+                    android:id="@+id/articleImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="350dp"
+                    android:clipToOutline="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/article4"
+                    android:background="@drawable/blue_background"
+                    android:backgroundTint="@color/blue"/>
+
+            </FrameLayout>
+
 
             <TextView
                 android:id="@+id/headlineText"

@@ -45,7 +45,8 @@
             android:text="judul artikell"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:clickable="true"/>
 
         <TextView
             android:id="@+id/authorText"

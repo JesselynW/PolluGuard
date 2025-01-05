@@ -118,7 +118,7 @@ public class ProfileFragment extends Fragment implements ProjectOnClick {
        });
 
        logoutButton.setOnClickListener(v -> {
-           SharedPreferences shp = v.getContext().getSharedPreferences("UserPrefs", MODE_PRIVATE);
+           SharedPreferences shp = v.getContext().getSharedPreferences("UserData", MODE_PRIVATE);
            SharedPreferences.Editor editor = shp.edit();
            editor.putBoolean("isLoggedIn", false);
            editor.apply();
