@@ -1,96 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/main"
-    android:layout_width="match_parent"
+<androidx.core.widget.NestedScrollView android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:fillViewport="true"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <LinearLayout
+    <LinearLayout android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/blue_background"
-        android:layout_margin="-100dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/articleImage"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="350dp"
-            android:clipToOutline="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/milah_plastik"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:background="@drawable/blue_background"
-            android:backgroundTint="@color/blue"/>
+            android:layout_margin="-100dp">
+
+            <ImageView
+                android:id="@+id/articleImage"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:clipToOutline="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/milah_plastik"
+                android:background="@drawable/blue_background"
+                android:backgroundTint="@color/blue"/>
+
+            <TextView
+                android:id="@+id/headlineText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Title artikel"
+                android:textSize="20dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/dateText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="author - date"
+                android:textSize="12dp"
+                android:textColor="@color/white"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="20dp"/>
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/headlineText"
+            android:id="@+id/contentText"
+            android:layout_margin="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Title artikel"
-            android:textSize="20dp"
-            android:textColor="@color/white"
+            android:text="content"/>
+
+        <TextView
+            android:id="@+id/commentText"
+            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="10dp"/>
+            android:textSize="20dp"
+            android:text="Comments"/>
 
-        <TextView
-            android:id="@+id/dateText"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="author - date"
-            android:textSize="12dp"
-            android:textColor="@color/white"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginBottom="20dp"/>
-    </LinearLayout>
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="20dp">
 
-    <TextView
-        android:id="@+id/contentText"
-        android:layout_margin="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="content"/>
+            <EditText
+                android:id="@+id/commentEditText"
+                android:layout_width="280dp"
+                android:layout_height="40dp"
+                android:background="@drawable/rounded_corners_border"
+                android:ems="10"
+                android:hint="Add a comment"
+                android:padding="10dp"
+                android:elevation="3dp"
+                android:textSize="12dp"
+                android:layout_marginRight="5dp"/>
 
-    <TextView
-        android:id="@+id/commentText"
-        android:layout_margin="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="20dp"
-        android:text="Comments"/>
+            <Button
+                android:id="@+id/postButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Post"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginHorizontal="20dp">
+        </LinearLayout>
 
-        <EditText
-            android:id="@+id/commentEditText"
-            android:layout_width="280dp"
-            android:layout_height="40dp"
-            android:background="@drawable/rounded_corners_border"
-            android:ems="10"
-            android:hint="Add a comment"
-            android:padding="10dp"
-            android:elevation="3dp"
-            android:textSize="12dp"
-            android:layout_marginRight="5dp"/>
-
-        <Button
-            android:id="@+id/postButton"
-            android:layout_width="wrap_content"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/commentRV"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Post"/>
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"
+            android:nestedScrollingEnabled="false"/>
 
     </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/commentRV"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="10dp"/>
-
-</LinearLayout>
+</androidx.core.widget.NestedScrollView>

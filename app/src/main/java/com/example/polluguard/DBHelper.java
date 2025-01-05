@@ -13,13 +13,16 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.example.polluguard.model.Article;
+import com.example.polluguard.model.Comment;
 import com.example.polluguard.model.Organizer;
 import com.example.polluguard.model.Project;
 import com.example.polluguard.model.User;
 import com.google.android.material.shape.CutCornerTreatment;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -93,6 +96,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE Article_comment(" +
                 "commentId INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "date TEXT," +
+                "comment TEXT," +
                 "articleId INTEGER," +
                 "userId INTEGER," +
                 "FOREIGN KEY (articleId) REFERENCES Article(articleId)," +
@@ -675,5 +679,81 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return true;
+    }
+
+    public void insertArticleComment(String comment, int userId, int articleId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Date currentDate = new Date();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = dateFormat.format(currentDate);
+
+        ContentValues values = new ContentValues();
+        values.put("date", formattedDate);
+        values.put("comment", comment);
+        values.put("articleId", articleId);
+        values.put("userId", userId);
+
+        Log.i("insert article comment", "date: " + formattedDate + " comment: " + comment + " id " + articleId + " user " + userId);
+
+        db.insert("Article_comment", null, values);
+
+        db.close();
+    }
+
+    public ArrayList<Comment> getAllArticleComment(int articleId) {
+        ArrayList<Comment> comments = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Log.i("articleId di getAll", "id: " + articleId);
+
+        Cursor cursor = db.rawQuery("SELECT ac.comment, ac.date, u.name AS name  FROM Article_comment AS ac JOIN User AS u ON ac.userId = u.userId WHERE ac.articleId = ?", new String[]{String.valueOf(articleId)});
+
+        if (cursor.moveToFirst()) {
+            do {
+                Comment comment = new Comment();
+
+                comment.setComment(cursor.getString(cursor.getColumnIndexOrThrow("comment")));
+                comment.setUsername(cursor.getString(cursor.getColumnIndexOrThrow("name")));
+
+                String dateFormat = "yyyy-MM-dd HH:mm:ss";
+
+                String dateString = cursor.getString(cursor.getColumnIndexOrThrow("date"));
+
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
+                Date date = null;
+
+                try {
+                    // Mengubah string menjadi objek Date
+                    date = simpleDateFormat.parse(dateString);
+                } catch (Exception e) {
+                    e.printStackTrace();  // Tangani exception jika terjadi kesalahan parsing
+                }
+
+// Sekarang variabel 'date' berisi objek Date yang dapat digunakan
+                comment.setDate(date);
+
+                Log.i("data comment", "date: " + comment.getDate() + " comment: " + comment.getComment() + " user: " + comment.getUsername());
+                comments.add(comment);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return comments;
+    }
+
+    public int getArticleId(String title, String date){
+        SQLiteDatabase db = this.getReadableDatabase();
+        int articleId = 0;
+
+        Cursor cursor = db.rawQuery("SELECT articleId FROM Article WHERE title = ? AND date = ?", new String[]{title, date});
+
+        if(cursor.moveToFirst()){
+            articleId = cursor.getInt(cursor.getColumnIndexOrThrow("articleId"));
+        }
+
+        return articleId;
     }
 }

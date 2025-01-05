@@ -45,7 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        sp = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        sp = getSharedPreferences("UserData", MODE_PRIVATE);
         boolean isLoggedIn = sp.getBoolean("isLoggedIn", false);
 
         if (isLoggedIn) {
@@ -74,8 +74,6 @@ public class RegisterActivity extends AppCompatActivity {
         registerButton = findViewById(R.id.registerButton);
         login = findViewById(R.id.loginLink);
         db = new DBHelper(this);
-
-        sp = getSharedPreferences("UserData", MODE_PRIVATE);
 
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override

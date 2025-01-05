@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences sp = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        SharedPreferences sp = getSharedPreferences("UserData", MODE_PRIVATE);
         boolean isLoggedIn = sp.getBoolean("isLoggedIn", false);
 
         if (isLoggedIn) {
@@ -72,10 +72,8 @@ public class LoginActivity extends AppCompatActivity {
                     int userId = cursor.getInt(cursor.getColumnIndexOrThrow("userId"));
 
                     if (cb.isChecked()) {
-                        SharedPreferences shp = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = shp.edit();
+                        SharedPreferences.Editor editor = sp.edit();
                         editor.putInt("user_id", userId);       // Save user ID
-                        editor.putString("email", email);      // Save email
                         editor.putBoolean("isLoggedIn", true); // Mark user as logged in
                         editor.apply();
                     }
