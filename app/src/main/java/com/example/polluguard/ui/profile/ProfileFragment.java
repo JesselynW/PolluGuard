@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.polluguard.DBHelper;
 import com.example.polluguard.EditProfileActivity;
 import com.example.polluguard.LoginActivity;
 import com.example.polluguard.UserProjectActivity;
@@ -32,11 +33,12 @@ import com.example.polluguard.adapter.UserProjectAdapter;
 import com.example.polluguard.databinding.FragmentProfileBinding;
 import com.example.polluguard.model.Project;
 import com.example.polluguard.recyclerView.ProjectOnClick;
+import com.example.polluguard.ui.ProjectDetails;
 import com.example.polluguard.ui.volunteer.VolunteerViewModel;
 
 import java.util.ArrayList;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements ProjectOnClick{
 
     private FragmentProfileBinding binding;
 
@@ -47,8 +49,6 @@ public class ProfileFragment extends Fragment {
     private int userId;
 
     private SharedPreferences sp;
-
-    private ProfileViewModel profileViewModel2;
 
     SwipeRefreshLayout swipeRefreshLayout;
     TextView etName, etPoint, etProjectSeeMore;
@@ -98,12 +98,17 @@ public class ProfileFragment extends Fragment {
            }
        });
 
-        userProjectAdapter = new UserProjectAdapter(getContext(), userId, new ArrayList<>());
+        userProjectAdapter = new UserProjectAdapter(getContext(), userId, new ArrayList<>(), this);
         userProjectRV.setAdapter(userProjectAdapter);
 
-       profileViewModel.getUserProjectLiveData().observe(getViewLifecycleOwner(), userProjectsData -> {
-           userProjectAdapter.updateData(userProjectsData);
-       });
+        userProjects = new ArrayList<>();
+
+        profileViewModel.getUserProjectLiveData().observe(getViewLifecycleOwner(), userProjectsData -> {
+            userProjects = userProjectsData;
+            userProjectAdapter.updateData(userProjects);
+        });
+
+
 
        etProjectSeeMore.setOnClickListener(v -> {
            Intent intent = new Intent(getActivity(), UserProjectActivity.class);
@@ -148,10 +153,11 @@ public class ProfileFragment extends Fragment {
         refreshUserPoint(profileViewModel);
         profileViewModel.initialize(getContext());
 
-        userProjectAdapter = new UserProjectAdapter(getContext(), userId, new ArrayList<>());
+        userProjectAdapter = new UserProjectAdapter(getContext(), userId, new ArrayList<>(), this);
         userProjectRV.setAdapter(userProjectAdapter);
 
         profileViewModel.getUserProjectLiveData().observe(getViewLifecycleOwner(), userProjectsData -> {
+            userProjects = userProjectsData;
             userProjectAdapter.updateData(userProjectsData);
         });
     }
@@ -162,4 +168,28 @@ public class ProfileFragment extends Fragment {
         binding = null;
     }
 
+    @Override
+    public void onItemClick(int position) {
+        Intent intent = new Intent(getContext(), ProjectDetails.class);
+        DBHelper dbHelper = new DBHelper(getContext());
+
+//        intent.putExtra("project", projects.get(position));
+        Log.i("project", "Project: " +  userProjects.get(position));
+        intent.putExtra("projectName", userProjects.get(position).getProjectName());
+        intent.putExtra("date", userProjects.get(position).getDate());
+        intent.putExtra("time", userProjects.get(position).getTime());
+        intent.putExtra("image", userProjects.get(position).getImageProject());
+        intent.putExtra("organizerName", userProjects.get(position).getOrganizer().getOrganizerName());
+        intent.putExtra("organizerLogo", userProjects.get(position).getOrganizer().getOrganizerLogo());
+        intent.putExtra("organizerDesc", userProjects.get(position).getOrganizer().getOrganizerDesc());
+        intent.putExtra("desc", userProjects.get(position).getAbout());
+        intent.putExtra("location", userProjects.get(position).getLocation());
+        intent.putExtra("reward", userProjects.get(position).getReward());
+        intent.putExtra("slot", userProjects.get(position).getSlot());
+        intent.putExtra("slotLeft", dbHelper.countSlotbyEventId(userProjects.get(position)));
+        intent.putExtra("linkWhatsapp", userProjects.get(position).getLinkWA());
+        intent.putExtra("qr", userProjects.get(position).getQr());
+
+        startActivity(intent);
+    }
 }

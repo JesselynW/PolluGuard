@@ -80,12 +80,10 @@ public class ProgressBarCircle extends View {
 
     public void setAqiPercentage(float aqi) {
         this.aqiPercentage = aqiToAqiPercentage(aqi);
-        Log.i("AQI PERCENTAGE = ", "aqi persen = " + aqiPercentage);
         invalidate();
     }
 
     public float aqiToAqiPercentage(float aqi){
-        Log.i("TESTTT = ", "aqi berapa > " + aqi + "coba ya = " +  aqi/MAX_AQI*100);
         return aqi/MAX_AQI*100; // maksimal aqi seharusnya adalah 300
     }
 }
