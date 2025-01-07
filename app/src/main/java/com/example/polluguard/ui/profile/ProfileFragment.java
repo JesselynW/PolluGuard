@@ -78,8 +78,7 @@ public class ProfileFragment extends Fragment {
 
         userProjectRV = binding.userProjectRecyclerView;
         userProjectRV.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-
-
+        
         etName = binding.name;
         etPoint = binding.point;
         ivProfile = binding.image;
@@ -139,6 +138,23 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        sp = getContext().getSharedPreferences("UserData", MODE_PRIVATE);
+        userId = sp.getInt("user_id", -1);
+
+        ProfileViewModel profileViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);;
+        refreshUserPoint(profileViewModel);
+        profileViewModel.initialize(getContext());
+
+        userProjectAdapter = new UserProjectAdapter(getContext(), userId, new ArrayList<>());
+        userProjectRV.setAdapter(userProjectAdapter);
+
+        profileViewModel.getUserProjectLiveData().observe(getViewLifecycleOwner(), userProjectsData -> {
+            userProjectAdapter.updateData(userProjectsData);
+        });
+    }
 
     @Override
     public void onDestroyView() {

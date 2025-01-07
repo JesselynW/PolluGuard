@@ -375,6 +375,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 ContentValues contentValues = new ContentValues();
                 contentValues.put("userId", userId);
                 contentValues.put("eventId", eventId);
+                contentValues.put("rewardStatus", 1);
 
                 db.insert("User_volunteer_event", null, contentValues);
 

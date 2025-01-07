@@ -52,6 +52,7 @@ public class UserProjectAdapter extends RecyclerView.Adapter<UserProjectAdapter.
         holder.name.setText(userProject.getProjectName());
         holder.bgImage.setImageResource(userProject.getImageProject());
         holder.logo.setImageResource(userProject.getOrganizer().getOrganizerLogo());
+        holder.location.setText(userProject.getLocation());
         holder.date.setText(userProject.getDate().substring(0, 2));
         holder.month.setText(userProject.getDate().substring(5, 8).toUpperCase());
         holder.reward.setText(rewardPoint + "");

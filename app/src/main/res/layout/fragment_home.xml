@@ -415,14 +415,6 @@ app:layout_constraintBottom_toBottomOf="parent">
             android:layout_marginRight="20dp"
             android:layout_marginBottom="20dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Articles"
-                android:textSize="20dp"
-                android:textColor="@color/black"
-                android:textStyle="bold"/>
-
         </LinearLayout>
 
 

@@ -84,9 +84,6 @@ public class ProjectDetails extends AppCompatActivity {
         rewardTV.setText(reward);
         progressBar.setProgress((int) slotPercentage);
         percentage.setText((int) slotPercentage + "%");
-//        int slotLeft = db.countSlotbyEventId((Project) intent.getSerializableExtra("project"));
-
-//        Log.i("slot left", "slot left: " + slotLeft);
         slotTV.setText(slot);
         nameTV.setText(name);
 
@@ -139,9 +136,14 @@ public class ProjectDetails extends AppCompatActivity {
         String name = intent.getStringExtra("projectName");
         String link = intent.getStringExtra("linkWhatsapp");
         int qr = intent.getIntExtra("qr", 0);
+        String slot = intent.getIntExtra("slotLeft", 0) + " left";
 
         double slotPercentage = 1 - ((double)intent.getIntExtra("slotLeft", 0)/(double)intent.getIntExtra("slot", 0));
         slotPercentage *= 100;
+
+        progressBar.setProgress((int) slotPercentage);
+        percentage.setText((int) slotPercentage + "%");
+        slotTV.setText(slot);
 
         if(db.checkUserVolunteered(userId, name)){
             participateButton.setVisibility(View.VISIBLE);
