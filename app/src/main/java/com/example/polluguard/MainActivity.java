@@ -31,33 +31,17 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-//        BottomNavigationView navView = findViewById(R.id.nav_view);
-//
-//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-//                R.id.navigation_home, R.id.navigation_volunteer, R.id.navigation_map, R.id.navigation_discover, R.id.navigation_profile)
-//                .build();
-//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_home);
-//
-//        NavigationUI.setupWithNavController(binding.navView, navController);
-
         Intent intent = getIntent();
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view);
 
-        // Find the NavController
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_activity_home);
         NavController navController = navHostFragment.getNavController();
 
-        // Link BottomNavigationView with NavController
-//        NavigationUI.setupWithNavController(bottomNavigationView, navController);
         if(intent.getBooleanExtra("toProfile", false))
             navController.navigate(R.id.navigation_profile);
 
         Log.i("event registration activity", "" + intent.getBooleanExtra("toProfile", false));
-
-        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            Log.d("Navigation", "Navigated to: " + destination.getId());
-        });
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
 
