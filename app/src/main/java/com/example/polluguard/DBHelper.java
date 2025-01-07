@@ -379,7 +379,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
                 db.insert("User_volunteer_event", null, contentValues);
 
-                Log.i("db insert", "successfully inserted data");
+                Log.i("db insert", "successfully inserted data user volunteer");
             }
             else {
                 Log.i("db insert", "Data already exists for userId: " + userId + " and eventId: " + eventId);
