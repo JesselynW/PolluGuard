@@ -92,21 +92,26 @@ public class ProjectDetails extends AppCompatActivity {
 
         participateButton = findViewById(R.id.participateButton);
         text = findViewById(R.id.alreadyRegisteredText);
-        Log.d("ProjectDetails", "participateButton is " + (participateButton == null ? "null" : "not null"));
-
 
         backButton.setOnClickListener(v -> {
             onBackPressed();
         });
 
+        Log.i("check user volunteered", "" + db.checkUserVolunteered(userId, name));
+
         if(db.checkUserVolunteered(userId, name)){
-            participateButton.setVisibility(View.VISIBLE);
             participateButton.setOnClickListener(e -> {
-                db.insertUserVolunteerEvent(userId, name);
+
+                Log.i("participate button", "masuk sini kan ya kannnnn");
 
                 Intent it = new Intent(ProjectDetails.this, EventRegistrationActivity.class);
                 it.putExtra("link", link);
                 it.putExtra("qrWA", qr);
+                it.putExtra("eventName", name);
+
+                Log.i("project participate button", "name: " + name + " link: " + link);
+
+                db.insertUserVolunteerEvent(userId, name);
 
                 startActivity(it);
             });
@@ -148,11 +153,12 @@ public class ProjectDetails extends AppCompatActivity {
         if(db.checkUserVolunteered(userId, name)){
             participateButton.setVisibility(View.VISIBLE);
             participateButton.setOnClickListener(e -> {
-                db.insertUserVolunteerEvent(userId, getIntent().getStringExtra("projectName"));
+                db.insertUserVolunteerEvent(userId, name);
 
                 Intent it = new Intent(ProjectDetails.this, EventRegistrationActivity.class);
                 it.putExtra("link", link);
                 it.putExtra("qrWA", qr);
+                it.putExtra("eventName", name);
 
                 startActivity(it);
             });

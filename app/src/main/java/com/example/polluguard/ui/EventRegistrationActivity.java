@@ -2,6 +2,7 @@ package com.example.polluguard.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -27,7 +28,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class EventRegistrationActivity extends AppCompatActivity {
 
     ImageView qrWA;
-    TextView linkWA;
+    TextView linkWA, judul;
     Button historyButton;
     ImageView backButton;
 
@@ -47,9 +48,13 @@ public class EventRegistrationActivity extends AppCompatActivity {
         qrWA = findViewById(R.id.qrImage);
         linkWA = findViewById(R.id.linkWA);
         backButton = findViewById(R.id.backButton);
+        judul = findViewById(R.id.judulText);
+
+        Log.i("event name di page qr", "name: " + intent.getStringExtra("eventName") + " link: " + intent.getStringExtra("link"));
 
         qrWA.setImageResource(intent.getIntExtra("qrWA", 0));
         linkWA.setText(intent.getStringExtra("link"));
+        judul.setText(intent.getStringExtra("eventName"));
 
         backButton.setOnClickListener(v -> {
             onBackPressed();
