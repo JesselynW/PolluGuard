@@ -24,7 +24,7 @@ import com.example.polluguard.recyclerView.ProjectOnClick;
 
 import java.util.ArrayList;
 
-public class UserProjectActivity extends AppCompatActivity implements ProjectOnClick {
+public class UserProjectActivity extends AppCompatActivity {
 
     private ArrayList<Project> userProjects;
     private UserProjectAdapter userProjectAdapter;
@@ -63,17 +63,9 @@ public class UserProjectActivity extends AppCompatActivity implements ProjectOnC
         DBHelper dbHelper = new DBHelper(this);
         userProjects = dbHelper.getAllUserProject(id);
 
-        Log.i("USER PROJECT ACTIVITY", "ADA KAH?? " + userProjects);
-
-        userProjectAdapter = new UserProjectAdapter(this, id, userProjects, this);
+        userProjectAdapter = new UserProjectAdapter(this, id, userProjects);
         userProjectsRV.setAdapter(userProjectAdapter);
 
     }
 
-
-
-    @Override
-    public void onItemClick(int position) {
-
-    }
 }

@@ -65,16 +65,12 @@ public class HomeFragment extends Fragment {
     private ActivityResultLauncher<String[]> locationPermissionRequest;
 
     private FragmentHomeBinding binding;
-    SharedPreferences sp;
 
     Button btnLearnMore, btnMap, btnVolunteer;
     TextView etName, etLocation, etAqi, etStatus, etLastUpdated;
     ImageView ivProfile;
     LinearLayout statusContainer;
     ProgressBarCircle aqiCircle;
-
-    private DBHelper dbHelper;
-    private HomeViewModel homeViewModel;
 
     private final double RADIUS = 10;
     private String locationBoundString;
@@ -89,9 +85,6 @@ public class HomeFragment extends Fragment {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-//        sp = requireContext().getSharedPreferences("UserData", Context.MODE_PRIVATE);
-//        int id = sp.getInt("user_id", -1);
 
         etName = binding.name;
         ivProfile = binding.image;
@@ -118,9 +111,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
-
 
         locationPermissionRequest = registerForActivityResult(
                 new ActivityResultContracts.RequestMultiplePermissions(),
@@ -130,9 +121,6 @@ public class HomeFragment extends Fragment {
 
                     if (fineLocation || coarseLocation) {
                         getNearestLocationAqi();
-
-//                        Log.i("NEAREST LOCATION DI LUAR", "LOCATION =  " + nearestStation + " aqi =  " + nearestLocationAqi);
-
 
                     } else {
                         Toast.makeText(requireContext(), "Permission not granted.", Toast.LENGTH_SHORT).show();
@@ -145,19 +133,9 @@ public class HomeFragment extends Fragment {
                 Manifest.permission.ACCESS_COARSE_LOCATION
         });
 
-
-
-
-
-
-
-
-
-
         btnLearnMore.setOnClickListener(v -> {
             View popupView = getLayoutInflater().inflate(R.layout.popup_information, null);
 
-//            int viewWidth = v.getWidth();
             Display display = getActivity().getWindowManager().getDefaultDisplay();
             Point size = new Point();
             display.getSize(size);
@@ -188,11 +166,6 @@ public class HomeFragment extends Fragment {
         });
 
         btnMap.setOnClickListener(v -> {
-//            NavOptions options = new NavOptions.Builder()
-//                    .setPopUpTo(R.id.navigation_home, false)
-//                    .build();
-//            Navigation.findNavController(v).navigate(R.id.navigation_map, null, options);
-
             BottomNavigationView navView = requireActivity().findViewById(R.id.nav_view);
 
             NavController navController = Navigation.findNavController(requireView());
@@ -206,10 +179,7 @@ public class HomeFragment extends Fragment {
             NavController navController = Navigation.findNavController(requireView());
             navController.navigate(R.id.navigation_volunteer);
             navView.setSelectedItemId(R.id.navigation_volunteer);
-//            navController.navigateUp();
         });
-//        NavController navController = Navigation.findNavController(requireView());
-//        navController.navigateUp();
         return root;
     }
 
@@ -220,10 +190,7 @@ public class HomeFragment extends Fragment {
         etLastUpdated.setText("Last Updated " + currDateTime);
 
         aqiCircle.setAqiPercentage((float) nearestLocationAqi);
-        Log.i("DI DALAM INITIALIZE AQI CIRCLE BAR", "nearestLocationAqi = " + nearestLocationAqi  + "(float)nearestLocationAqi = " + (float) nearestLocationAqi);
         String nearestLocationAqiLevel = AirPollutionLevel.getAQILevel(nearestLocationAqi);
-
-        Log.i("DI DALAM INITIALIZE AQI CIRCLE BAR", "CASE = " + nearestLocationAqiLevel);
 
         switch (nearestLocationAqiLevel) {
             case "Good":

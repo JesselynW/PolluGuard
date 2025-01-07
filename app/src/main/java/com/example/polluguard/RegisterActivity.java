@@ -64,7 +64,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        getSupportActionBar().hide();
 
         etName = findViewById(R.id.nameEditText);
         etEmail = findViewById(R.id.emailEditText);
@@ -86,12 +85,12 @@ public class RegisterActivity extends AppCompatActivity {
                         bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
 
                     } catch(Exception e){
-                        Log.e("ERRRROR", "Exception in onActivityResult : " + e.getMessage());
+                        Log.e("ERROR", "Exception in onActivityResult : " + e.getMessage());
                     }
                     ivProfile.setImageBitmap(bitmapImage);
                 }
                 else {
-                    Log.e("ERRRROR", "No Image Selected");
+                    Log.e("ERROR", "No Image Selected");
                 }
             }
         });
@@ -135,16 +134,11 @@ public class RegisterActivity extends AppCompatActivity {
                     Cursor cursor = db.getUser();
                     int id = 0;
                     while(cursor.moveToNext()){
-                        Log.i("User Check", "User ID = "+ cursor.getString(0) +  "User Name= " + cursor.getString(1) + " - Email = "
-                                + cursor.getString(2) + " - Password = " + cursor.getString(3) + " - Image " +
-                                cursor.getBlob(4));
                         id = Integer.parseInt(cursor.getString(0));
                     }
                     SharedPreferences.Editor editor = sp.edit();
                     editor.putInt("user_id", id);
                     editor.apply();
-
-                    Log.i("id check","id = " + id);
 
                     Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                     startActivity(intent);

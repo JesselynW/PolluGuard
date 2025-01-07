@@ -45,23 +45,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MapFragment extends Fragment {
-//    private GoogleMap googleMap;
+
     private AirQualityService service;
     private String waqiApiKey = "ce00656b30945718db12018a8ee5468c98a68cdf";
     private final String BOUND_INDONESIA = "-11.0,95.0,6.0,141.0";
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
-
-
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
         @Override
         public void onMapReady(GoogleMap googleMap) {
             fetchAQIDataForIndonesia(googleMap);
@@ -109,27 +98,7 @@ public class MapFragment extends Fragment {
                         double lon = airQuality.getLon();
                         double aqi = airQuality.getAqi();
 
-                        String station = airQuality.getStation().getName();
-//                        Log.i("test api", "lat " + lat + "lon " + lon + "aqi " + aqi);
-//                        Log.i("test api station", "station"  + airQuality.getStation().getName());
-                        String aqiSnippet = "AQI: " + aqi;
-//                        if(airQuality.getStation() != null){
-//                            Log.e("test", "test bang");
-//                            String name = airQuality.getStation().getName();
-//                            String aqiSnippet = "AQI: " + aqi;
-//                            LatLng location = new LatLng(lat, lon);
-//                            googleMap.addMarker(new MarkerOptions()
-//                                    .position(location)
-//                                    .title(name)
-//                                    .snippet(aqiSnippet));
-//                        }
-
                         Bitmap customMarker = customMarker(requireContext(), aqi);
-//                        LatLng location = new LatLng(lat, lon);
-//                        googleMap.addMarker(new MarkerOptions()
-//                                .position(location)
-//                                .title(station)
-//                                .snippet(aqiSnippet));
                         LatLng location = new LatLng(lat, lon);
                         Marker marker = googleMap.addMarker(new MarkerOptions()
                                 .position(location)
@@ -151,8 +120,6 @@ public class MapFragment extends Fragment {
                     });
 
                     googleMap.setOnMapClickListener(latLng -> hidePopUp());
-
-//                    googleMap.setInfoWindowAdapter(new MapInfoAdapter(getContext()));
                 }
                 else {
                     Toast.makeText(getContext(), "Failed to get API", Toast.LENGTH_SHORT).show();

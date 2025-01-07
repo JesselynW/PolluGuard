@@ -102,7 +102,6 @@ public class AirQuality {
                 try {
                     aqi = Double.parseDouble(aqiString);
                 } catch (NumberFormatException e) {
-                    // Jika parsing gagal, kita set ke nilai default
                     aqi = -1;
                 }
             }
@@ -111,7 +110,6 @@ public class AirQuality {
                 try {
                     lat = Double.parseDouble(latString);
                 } catch (NumberFormatException e) {
-                    // Jika parsing gagal, kita set ke nilai default
                     lat = -1;
                 }
             }
@@ -120,12 +118,10 @@ public class AirQuality {
                 try {
                     lon = Double.parseDouble(lonString);
                 } catch (NumberFormatException e) {
-                    // Jika parsing gagal, kita set ke nilai default
                     lon = -1;
                 }
             }
 
-            // Set nilai AQI pada objek AirQuality
             airQuality.setAqi(aqi);
             airQuality.setLat(lat);
             airQuality.setLon(lon);

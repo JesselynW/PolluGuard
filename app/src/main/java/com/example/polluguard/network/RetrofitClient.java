@@ -16,10 +16,6 @@ public class RetrofitClient {
 
     public static Retrofit getInstance() {
         if(retrofit == null) {
-//            Gson gson = new GsonBuilder()
-//                    .registerTypeAdapter(Double.class, new DoubleDeserializer())  // Register custom deserializer
-//                    .create();
-
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 

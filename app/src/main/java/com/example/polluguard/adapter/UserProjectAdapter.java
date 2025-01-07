@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Random;
 
 public class UserProjectAdapter extends RecyclerView.Adapter<UserProjectAdapter.UserProjectViewHolder> {
-    private final ProjectOnClick projectClick;
     private Context context;
     private List<Project> userProjects;
     private int userId;
@@ -30,11 +29,10 @@ public class UserProjectAdapter extends RecyclerView.Adapter<UserProjectAdapter.
 
     Random rand = new Random();
 
-    public UserProjectAdapter(Context context, int userId, List<Project> userProjects, ProjectOnClick projectClick) {
+    public UserProjectAdapter(Context context, int userId, List<Project> userProjects) {
         this.context = context;
         this.userId = userId;
         this.userProjects = userProjects;
-        this.projectClick = projectClick;
         this.dbHelper = new DBHelper(context.getApplicationContext());
     }
 
@@ -42,7 +40,7 @@ public class UserProjectAdapter extends RecyclerView.Adapter<UserProjectAdapter.
     @Override
     public UserProjectAdapter.UserProjectViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user_project, parent, false);
-        return new UserProjectViewHolder(view, projectClick);
+        return new UserProjectViewHolder(view);
     }
 
     @Override
@@ -59,7 +57,6 @@ public class UserProjectAdapter extends RecyclerView.Adapter<UserProjectAdapter.
         holder.reward.setText(rewardPoint + "");
 
         boolean rewardStatus = dbHelper.getUserProjectRewardStatus(userId, projectId);
-        Log.i("USER PROJECT ADAPTER", "REWARD STATUS = " + rewardStatus);
 
         // jika sudah diclaim
         if(!rewardStatus){
@@ -95,7 +92,7 @@ public class UserProjectAdapter extends RecyclerView.Adapter<UserProjectAdapter.
         LinearLayout rewardButton;
         ImageView rewardLogo;
 
-        public UserProjectViewHolder(@NonNull View itemView, ProjectOnClick projectClick) {
+        public UserProjectViewHolder(@NonNull View itemView) {
             super(itemView);
             bgImage = itemView.findViewById(R.id.projectImage_userProject);
             logo = itemView.findViewById(R.id.organizerLogo_userProject);
@@ -106,19 +103,6 @@ public class UserProjectAdapter extends RecyclerView.Adapter<UserProjectAdapter.
             reward = itemView.findViewById(R.id.rewardText_userProject);
             rewardButton = itemView.findViewById(R.id.rewardButton);
             rewardLogo = itemView.findViewById(R.id.rewardLogo);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (projectClick != null){
-                        int pos = getAdapterPosition();
-
-                        if(pos != RecyclerView.NO_POSITION){
-                            projectClick.onItemClick(pos);
-                        }
-                    }
-                }
-            });
         }
     }
 

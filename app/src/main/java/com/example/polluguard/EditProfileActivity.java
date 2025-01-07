@@ -86,12 +86,12 @@ public class EditProfileActivity extends AppCompatActivity {
                         bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
 
                     } catch(Exception e){
-                        Log.e("ERRRROR", "Exception in onActivityResult : " + e.getMessage());
+                        Log.e("ERROR", "Exception in onActivityResult : " + e.getMessage());
                     }
                     ivProfile.setImageBitmap(bitmapImage);
                 }
                 else {
-                    Log.e("ERRRROR", "No Image Selected");
+                    Log.e("ERROR", "No Image Selected");
                 }
             }
         });
@@ -118,13 +118,7 @@ public class EditProfileActivity extends AppCompatActivity {
             String phoneNumber = etPhoneNumber.getText().toString();
 
             dbHelper.validateProfile(this, id, name, email, oldPw, newPw, phoneNumber, bitmapImage);
-//            if(isValid) {
-//                Fragment fragment = new ProfileFragment();
-//                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//                transaction.replace(R.id.nav_host_fragment_activity_home, fragment);
-//                transaction.addToBackStack(null);
-//                transaction.commit();
-//            }
+
             loadUserData(dbHelper, id);
         });
 
@@ -140,8 +134,7 @@ public class EditProfileActivity extends AppCompatActivity {
             ivProfile.setImageBitmap(user.getImage());
             etName.setText(user.getName());
             etEmail.setText(user.getEmail());
-            etPhoneNumber.setText(user.getPhoneNumber()); // phone number nya masih gak bisa
-            Log.i("gaada kah? = ", "test = " + user.getPhoneNumber() + " user.getName() = " + user.getName());
+            etPhoneNumber.setText(user.getPhoneNumber());
         }
     }
 

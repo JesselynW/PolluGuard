@@ -3,8 +3,8 @@ package com.example.polluguard.network;
 import java.util.List;
 
 public class AirQualityResponse {
-    private String status;    // Optional: for storing the status of the response
-    private List<AirQuality> data;  // This is the actual data we're interested in
+    private String status;
+    private List<AirQuality> data;
 
     public String getStatus() {
         return status;

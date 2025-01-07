@@ -36,7 +36,7 @@ import com.example.polluguard.ui.volunteer.VolunteerViewModel;
 
 import java.util.ArrayList;
 
-public class ProfileFragment extends Fragment implements ProjectOnClick {
+public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
 
@@ -99,12 +99,11 @@ public class ProfileFragment extends Fragment implements ProjectOnClick {
            }
        });
 
-        userProjectAdapter = new UserProjectAdapter(getContext(), userId, new ArrayList<>(), this);
+        userProjectAdapter = new UserProjectAdapter(getContext(), userId, new ArrayList<>());
         userProjectRV.setAdapter(userProjectAdapter);
 
        profileViewModel.getUserProjectLiveData().observe(getViewLifecycleOwner(), userProjectsData -> {
            userProjectAdapter.updateData(userProjectsData);
-           Log.i("USER PROJECT DATA", "TESTT= " + userProjectsData);
        });
 
        etProjectSeeMore.setOnClickListener(v -> {
@@ -132,17 +131,12 @@ public class ProfileFragment extends Fragment implements ProjectOnClick {
 
     private void refreshUserPoint( ProfileViewModel profileViewModel) {
         swipeRefreshLayout.setRefreshing(true);
-//        etName.setText("HAAAAAIII djafjadfas");
         profileViewModel.getUserLiveData().observe(getViewLifecycleOwner(), user -> {
             if (user != null) {
-                // When LiveData is updated, update UI accordingly
                 etPoint.setText(Integer.toString(user.getVolunteerPoints()));
-
-                // After data is refreshed, stop the refreshing animation
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-//        swipeRefreshLayout.setRefreshing(false);
     }
 
 
@@ -152,8 +146,4 @@ public class ProfileFragment extends Fragment implements ProjectOnClick {
         binding = null;
     }
 
-    @Override
-    public void onItemClick(int position) {
-
-    }
 }

@@ -111,23 +111,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-//            if(oldVersion < 2){
-//                db.execSQL("create table User_New (" +
-//                        "id integer primary key autoincrement," +
-//                        "name text," +
-//                        "email text," +
-//                        "password text," +
-//                        "image blob)"); // Renaming column_a to column_b
-//
-//                // Step 2: Copy data from the old table to the new table
-//                db.execSQL("INSERT INTO User_New (id, name, email, password, image) SELECT id, name, email, pasword, image FROM User;");
-//
-//                // Step 3: Drop the old table
-//                db.execSQL("DROP TABLE IF EXISTS User;");
-//
-//                // Step 4: Rename the new table to the old table name
-//                db.execSQL("ALTER TABLE User_New RENAME TO User;");
-//            }
         db.execSQL("DROP TABLE IF EXISTS User");
         db.execSQL("DROP TABLE IF EXISTS Organizer");
         db.execSQL("DROP TABLE IF EXISTS Volunteer_event");
@@ -173,17 +156,11 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put("name", user.getName());
         values.put("email", user.getEmail());
         if(!user.getPassword().equals("")) values.put("password", user.getPassword());
-        if(user.getPhoneNumber() != null){
-            Log.i("DB HELPER UDPATE", "MASUK KAH? KE DALAM IF NYA");
-            values.put("phoneNumber", user.getPhoneNumber());
-        }
+        if(user.getPhoneNumber() != null) values.put("phoneNumber", user.getPhoneNumber());
         if(user.getImage() != null) values.put("image", byteImage);
 
-
         long checkQuery = db.update("User", values, "userId = ?", new String[]{String.valueOf(id)});
-        Log.i("DB HELPER UPDATE", "CHECK PHONE NUMBER= " + values.get("phoneNumber"));
-        Log.i("DB HELPER UPDATE", "CHECK PHONE NUMBER setelah update= " + user.getPhoneNumber());
-        Log.i("DB HELPER UPDATE", "CHECK QUERY = " + checkQuery);
+
         if(checkQuery == -1) return false;
         else return true;
 
@@ -335,8 +312,6 @@ public class DBHelper extends SQLiteOpenHelper {
                         cursor.getInt(cursor.getColumnIndexOrThrow("organizerLogo")),
                         cursor.getString(cursor.getColumnIndexOrThrow("organizerDesc"))));
 
-//                Log.i("DB HELPERRRRRR", "ID EVENTTTT = " + cursor.getInt(cursor.getColumnIndexOrThrow("eventId")));
-
                 projects.add(project);
             } while (cursor.moveToNext());
         }
@@ -470,9 +445,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         Cursor cursor = db.rawQuery(
                 "SELECT ve.eventId, rewardStatus, userId, ve.name, ve.image, ve.date, ve.location, ve.reward, o.logo AS organizerLogo FROM Volunteer_event AS ve JOIN User_volunteer_event AS uve ON ve.eventId = uve.eventId JOIN Organizer AS o ON o.organizerId = ve.organizerId WHERE userId = ? AND rewardStatus = 1", new String[]{String.valueOf(userId)});
-//        Cursor cursor = db.rawQuery("SELECT * FROM User_Volunteer_event", new String[]{});
-//        Log.i("DB HELPER", "Cursor = " + cursor);
-//        Log.i("DB HELPER",  "Project Name = " + cursor.getString(cursor.getColumnIndexOrThrow("name")));
+
         try {
             if(cursor.moveToFirst()) {
                 do{
@@ -488,11 +461,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
                     userProjects.add(project);
 
-//                    Log.i("DB HELPER",  "Project ID = " + cursor.getString(cursor.getColumnIndexOrThrow("name")));
-//                    Log.i("DB HELPER", "Project = " + project + " Project Name = " + project.getProjectName());
-                    Log.i("DB HELPER",  "Project ID = " + cursor.getInt(cursor.getColumnIndexOrThrow("eventId")));
-                    Log.i("DB HELPER", "User ID = " + cursor.getInt(cursor.getColumnIndexOrThrow("userId")));
-                    Log.i("DB HELPER", "Status Reward = " + cursor.getInt(cursor.getColumnIndexOrThrow("rewardStatus")));
                 }while(cursor.moveToNext());
 
             }
@@ -512,12 +480,6 @@ public class DBHelper extends SQLiteOpenHelper {
                             cursor.getInt(cursor.getColumnIndexOrThrow("organizerLogo"))));
 
                     userProjects.add(project);
-
-//                    Log.i("DB HELPER",  "Project ID = " + cursor.getString(cursor.getColumnIndexOrThrow("name")));
-//                    Log.i("DB HELPER", "Project = " + project + " Project Name = " + project.getProjectName());
-                    Log.i("DB HELPER",  "Project ID = " + cursor.getInt(cursor.getColumnIndexOrThrow("eventId")));
-                    Log.i("DB HELPER", "User ID = " + cursor.getInt(cursor.getColumnIndexOrThrow("userId")));
-                    Log.i("DB HELPER", "Status Reward = " + cursor.getInt(cursor.getColumnIndexOrThrow("rewardStatus")));
                 }while(cursor.moveToNext());
 
             }
@@ -538,9 +500,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         Cursor cursor = db.rawQuery(
                 "SELECT ve.eventId, userId, rewardStatus, ve.name, ve.image, ve.date, ve.location, ve.reward, o.logo AS organizerLogo FROM Volunteer_event AS ve JOIN User_volunteer_event AS uve ON ve.eventId = uve.eventId JOIN Organizer AS o ON o.organizerId = ve.organizerId WHERE userId = ? ORDER BY rewardStatus DESC LIMIT 5", new String[]{String.valueOf(userId)});
-//        Cursor cursor = db.rawQuery("SELECT * FROM User_Volunteer_event", new String[]{});
-//        Log.i("DB HELPER", "Cursor = " + cursor);
-//        Log.i("DB HELPER",  "Project Name = " + cursor.getString(cursor.getColumnIndexOrThrow("name")));
+
         try {
             if(cursor.moveToFirst()) {
                 do{
@@ -556,8 +516,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
                     userProjects.add(project);
 
-//                    Log.i("DB HELPER",  "Project ID = " + cursor.getString(cursor.getColumnIndexOrThrow("name")));
-//                    Log.i("DB HELPER", "Project = " + project + " Project Name = " + project.getProjectName());
                     Log.i("DB HELPER",  "Project ID = " + cursor.getInt(cursor.getColumnIndexOrThrow("eventId")));
                     Log.i("DB HELPER", "User ID = " + cursor.getInt(cursor.getColumnIndexOrThrow("userId")));
                     Log.i("DB HELPER", "Status Reward = " + cursor.getInt(cursor.getColumnIndexOrThrow("rewardStatus")));
@@ -575,8 +533,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public boolean getUserProjectRewardStatus(int userId, int eventId){
-
-        Log.i("DB HELPER = ", " User ID = " + userId + "Event ID = " + eventId);
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.rawQuery(
@@ -586,7 +542,6 @@ public class DBHelper extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             if(cursor.getInt(cursor.getColumnIndexOrThrow("rewardStatus")) == 1){
                 rewardStatus = true;
-                Log.i("DB HELPER", " REWARD STATUS ? = " + rewardStatus + "cursor ? = " + cursor.getInt(cursor.getColumnIndexOrThrow("rewardStatus")) );
             }
         }
         cursor.close();
@@ -640,7 +595,6 @@ public class DBHelper extends SQLiteOpenHelper {
             user.setEmail(email);
             if(!oldPw.equals("") && !newPw.equals("")) user.setPassword(newPw);
             if(!phoneNumber.equals("")) user.setPhoneNumber(phoneNumber);
-            Log.i("DI DALAM DB HELPER = ", "USER PHONE NUMBER? = " + user.getPhoneNumber());
             if(bitmap != null) user.setImage(bitmap);
             updateUser(user, id);
             Toast.makeText(context, "Successfully change profile!", Toast.LENGTH_SHORT).show();

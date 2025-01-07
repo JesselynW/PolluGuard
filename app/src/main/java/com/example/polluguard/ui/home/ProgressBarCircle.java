@@ -35,24 +35,19 @@ public class ProgressBarCircle extends View {
     }
 
     private void initialize(){
-
-        // REFACTORINGGGGG!!!
         backgroundCircle = new Paint();
         backgroundCircle.setColor(ContextCompat.getColor(getContext(), R.color.gray));
         backgroundCircle.setStyle(Paint.Style.STROKE);
         backgroundCircle.setStrokeWidth(35);
         backgroundCircle.setAntiAlias(true);
 
-        // Paint for progress circle
         progressCircle = new Paint();
-        progressCircle.setColor(ContextCompat.getColor(getContext(), R.color.gray)); // default the progress bar is empty
+        progressCircle.setColor(ContextCompat.getColor(getContext(), R.color.gray));
         progressCircle.setStyle(Paint.Style.STROKE);
         progressCircle.setStrokeWidth(35);
         progressCircle.setAntiAlias(true);
         progressCircle.setStrokeCap(Paint.Cap.ROUND);
     }
-
-
 
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
@@ -66,13 +61,13 @@ public class ProgressBarCircle extends View {
 
         float sweepAngle = (aqiPercentage / 100f) * 360;
         canvas.drawArc(
-                20, // Left
-                20, // Top
-                width - 20, // Right
-                height - 20, // Bottom
-                -90, // Start angle (top center)
-                sweepAngle, // Sweep angle
-                false, // Don't fill the arc
+                20,
+                20,
+                width - 20,
+                height - 20,
+                -90,
+                sweepAngle,
+                false,
                 progressCircle
         );
     }
